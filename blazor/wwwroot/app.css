@@ -55,3 +55,9 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+.absolute-nav {
+    position: absolute;
+    width: 100%;
+    top: 0;
+}

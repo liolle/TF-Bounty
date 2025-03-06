@@ -1,11 +1,25 @@
 using blazor.Components;
+using blazor.services;
+using DotNetEnv;
+using Microsoft.AspNetCore.Components.Authorization;
 using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add Env &  Json configuration
+Env.Load();
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+builder.Configuration.AddEnvironmentVariables();
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<AuthenticationStateProvider, AuthProvider>();
+builder.Services.AddScoped<IAuthService,AuthService>();
 
 var app = builder.Build();
 
