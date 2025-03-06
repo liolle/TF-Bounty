@@ -16,29 +16,32 @@ public class AuthProvider(IHttpContextAccessor httpContextAccessor) : Authentica
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
 
-        string? accessToken = httpContext.Request.Cookies["bounty_auth_token"];
+        string? token = httpContext.Request.Cookies["bounty_auth_token"];
 
-        if (accessToken is null)
+        if (token is null)
         {
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
 
         JwtSecurityTokenHandler handler = new();
-        JwtSecurityToken jsonToken = handler.ReadJwtToken(accessToken);
+        JwtSecurityToken jsonToken = handler.ReadJwtToken(token);
 
-/*
-        string? email = jsonToken.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
-        string? id = jsonToken.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
-        string? provider = jsonToken.Claims.FirstOrDefault(c => c.Type == "Provider")?.Value;
+        string? oid = jsonToken.Claims.FirstOrDefault(c => c.Type == "oid")?.Value;
 
-        if (email is null || id is null || provider is null)
-        {
+        if (oid is null){
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
-*/
 
+        IEnumerable<Claim>roles = jsonToken.Claims.Where(val=>val.Type =="roles");
 
-        List<Claim> claims =[];
+        List<Claim> claims = [
+            new("oid",oid)
+        ];
+
+        foreach (Claim item in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role,item.Value));
+        }
 
         ClaimsIdentity identity = new(claims, "cookieAuth");
         await Task.CompletedTask;
