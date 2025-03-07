@@ -1,9 +1,20 @@
+using System.Security.Claims;
 using api.CQS;
 using api.exceptions;
 using api.models;
 
 namespace api.services;
 
+
+// Async Commands
+
+public partial class UserService
+{
+
+}
+
+
+// Async Queries
 public partial class UserService
 {
 
@@ -32,16 +43,21 @@ public partial class UserService
 
             MicrosoftTokenModel? res = await tokenResponse.Content.ReadFromJsonAsync<MicrosoftTokenModel>();
 
+
             if (res is null)
             {
                 return IQueryResult<string>.Failure("Authentication failed");
             }
-            
-            return IQueryResult<string>.Success(jwt.Generate(res.GetClaims(this)));
+
+            List<Claim> claims =  res.GetClaims(this);
+            string oid = claims.FirstOrDefault(c => c.Type == "oid")?.Value ?? throw new MalformedInputException("Auth generate claims");
+            Execute(new CreateUserCommand(oid));
+            return IQueryResult<string>.Success(jwt.Generate(claims));
         }
-        catch (Exception e)
+        catch (Exception )
         {
             return IQueryResult<string>.Failure("Server error");
         }
     }
+
 }
