@@ -25,6 +25,8 @@ BEGIN
         [id]            [int] IDENTITY(1,1) NOT NULL,
         [creator]       [int] NOT NULL,
         [logo]          [nvarchar](100),
+        [title]         [varchar](200) NOT NULL,
+        [description]   [text],
         [reward]        [int]
 
         CONSTRAINT PK_Program_id PRIMARY KEY CLUSTERED([id]),

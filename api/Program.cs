@@ -33,7 +33,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 Encoding.UTF8.GetBytes(jwt_key))
         };
 
-        // extract token from cookies and place it into the Bearer.
+        // extract token from cookies and place it into the Authorization header.
         options.Events = new JwtBearerEvents
         {
             OnMessageReceived = context =>
