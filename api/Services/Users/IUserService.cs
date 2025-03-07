@@ -6,8 +6,8 @@ namespace api.services;
 
 public interface IUserService :
     ICommandHandler<CreateUserCommand>,
-    IQueryHandlerAsync<OauthMicrosoftQuery,string>,
-    IQueryHandler<GetUserFromOidQuery,UserEntity>
+    IQueryHandler<GetUserFromOidQuery,UserEntity>,
+    IQueryHandlerAsync<OauthMicrosoftQuery,string>
 {
     
 }

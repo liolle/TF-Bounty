@@ -66,7 +66,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<HttpClient>();
 builder.Services.AddScoped<IJwtService,JwtService>();
 builder.Services.AddScoped<IDataContext,DataContext>();
-builder.Services.AddTransient<IUserService,UserService>();
+builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<IProgramService,ProgramService>();
 
 var app = builder.Build();
 

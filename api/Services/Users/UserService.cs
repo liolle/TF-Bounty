@@ -51,7 +51,7 @@ public partial class UserService
 // Queries
 public partial class UserService
 {
-    QueryResult<UserEntity> IQueryHandler<GetUserFromOidQuery, UserEntity>.Execute(GetUserFromOidQuery query)
+    public QueryResult<UserEntity> Execute(GetUserFromOidQuery query)
     {
         using SqlConnection conn = context.CreateConnection();
 
@@ -62,6 +62,7 @@ public partial class UserService
 
         using SqlCommand cmd = new(sql_query, conn);
         cmd.Parameters.AddWithValue("@Oid", query.Oid);
+        conn.Open();
 
         using SqlDataReader reader = cmd.ExecuteReader();
         if (reader.Read())

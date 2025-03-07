@@ -1,6 +1,7 @@
 using api.CQS;
 using api.exceptions;
 using api.services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
