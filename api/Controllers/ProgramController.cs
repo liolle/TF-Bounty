@@ -71,4 +71,21 @@ public class ProgramController(IProgramService programService) : ControllerBase
         await Task.CompletedTask;
         return Ok(result.Result);
     }
+
+
+
+    [HttpGet]
+    [Route("/program/get/all")]
+    public async Task<IActionResult> GetAllPrograms()
+    {
+        QueryResult<List<ProgramEntity>> result = programService.Execute(new GetProgramsQuery());
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result.ErrorMessage);
+        }
+
+        await Task.CompletedTask;
+        return Ok(result.Result);
+    }
 }

@@ -49,7 +49,7 @@ public partial class ProgramService
             return ICommandResult.Success();
         }
 
-        catch (Exception )
+        catch (Exception)
         {
             return ICommandResult.Failure("Server error");
         }
@@ -65,7 +65,6 @@ public partial class ProgramService
 
         try
         {
-
             using SqlConnection conn = context.CreateConnection();
             List<ProgramEntity> programs = [];
 
@@ -86,7 +85,50 @@ public partial class ProgramService
             cmd.Parameters.AddWithValue("@Oid", query.Oid);
             conn.Open();
             using SqlDataReader reader = cmd.ExecuteReader();
-            if (reader.Read())
+            while (reader.Read())
+            {
+                ProgramEntity program = ProgramEntity.Create(
+                    (int)reader["programId"],
+                    (int)reader["userId"],
+                    (string)reader["logo"],
+                    (int)reader["reward"],
+                    (string)reader["title"],
+                    (string)reader["description"]
+                );
+                programs.Add(program);
+            }
+
+            return IQueryResult<List<ProgramEntity>>.Success(programs);
+        }
+        catch (Exception)
+        {
+            return IQueryResult<List<ProgramEntity>>.Failure("Server error");
+        }
+    }
+
+    public QueryResult<List<ProgramEntity>> Execute(GetProgramsQuery query)
+    {
+        try
+        {
+            using SqlConnection conn = context.CreateConnection();
+            List<ProgramEntity> programs = [];
+
+            string sql_query = $@"
+            SELECT 
+                prog.id programId,
+                u.id userId,
+                prog.logo,
+                prog.reward,
+                prog.title,
+                prog.description
+            FROM [Users] u
+            JOIN [Programs] prog ON u.id = prog.creator
+            ";
+
+            using SqlCommand cmd = new(sql_query, conn);
+            conn.Open();
+            using SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
             {
                 ProgramEntity program = ProgramEntity.Create(
                     (int)reader["programId"],
