@@ -1,12 +1,37 @@
-.c-page{
+.c-page {
     height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: hidden;
 }
 
-.roles {
+.main-container {
     display: flex;
     flex-direction: column;
+    padding: .5rem .5rem;
+    width: 100%;
+    height: 100%;
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content:space-evenly;
+}
+
+.main::-webkit-scrollbar {
+    display: none;
+}
+
+.navbar-spot {
+    height: 5rem;
+    width: 100%;
 }

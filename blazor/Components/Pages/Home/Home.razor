@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.Components.Authorization
+@using blazor.Components.Cards.ProgramCard
 @using blazor.Components.Navigation
+@using blazor.models
 @rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
@@ -9,18 +11,13 @@
     <div class="absolute-nav">
         <Navbar />
     </div>
-    <div class="text-light roles">
-        <AuthorizeView>
-            <span>AuthorizeView</span>
-        </AuthorizeView>
-        <AuthorizeView Roles="Admin">
-            <span>Admin only</span>
-        </AuthorizeView>
-        <AuthorizeView Roles="Bounty.Creator">
-            <span>Company only</span>
-        </AuthorizeView>
-        <AuthorizeView Roles="Bounty.Hunter">
-            <span>Hunter only</span>
-        </AuthorizeView>
+    <div class="main-container">
+        <div class="navbar-spot"></div>
+        <div class="main">
+            @foreach (ProgramModel program in programs)
+            {
+                <ProgramCard program="program" />
+            }
+        </div>
     </div>
 </div>

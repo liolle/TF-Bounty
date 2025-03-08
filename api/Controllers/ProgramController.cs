@@ -76,6 +76,7 @@ public class ProgramController(IProgramService programService) : ControllerBase
 
     [HttpGet]
     [Route("/program/get/all")]
+    [EnableCors("auth-input")]
     public async Task<IActionResult> GetAllPrograms()
     {
         QueryResult<List<ProgramEntity>> result = programService.Execute(new GetProgramsQuery());

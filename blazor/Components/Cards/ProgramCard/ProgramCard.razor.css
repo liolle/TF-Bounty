@@ -1,0 +1,48 @@
+.logo {
+    height: fit-content;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 .5rem 0 0;
+}
+
+img {
+    object-fit: contain;
+    height: 2rem;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: .5rem .5rem;
+    border: 1px solid azure;
+    border-radius: .5rem;
+    width: 20rem;
+    gap: .5rem;
+    color: azure;
+    user-select: none;
+    cursor: pointer;
+    height: 20rem;
+}
+
+.description {
+    font-size: small;
+    height: 100%;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.card-container:hover {
+    border: 1px solid green;
+}
+
+.reward {
+    color: yellow;
+    font-size: small;
+    font-weight: bold;
+    font-style: italic;
+}
