@@ -1,21 +1,51 @@
 using blazor.models;
+using blazor.utils;
 using Microsoft.JSInterop;
 
 namespace blazor.services;
 
 public interface IProgramService
 {
-    Task<List<ProgramModel>> GetAll();
+    Task<List<ProgramModel>> GetAll(int timeout = 250);
 }
 
-public class ProgramService(IJSRuntime jSRuntime) : IProgramService
+public class ProgramService : IProgramService, IDisposable
 {
 
+    private readonly IJSRuntime _jSRuntime;
+    private readonly Debouncer _debouncer;
 
-    public async Task<List<ProgramModel>> GetAll()
+    public ProgramService(IJSRuntime jSRuntime)
     {
-        await Task.CompletedTask;
-        List<RawProgramModel> raw_programs = await jSRuntime.InvokeAsync<List<RawProgramModel>>("getAllProgram");
-        return [.. raw_programs.Select(val=>val.Extract())];
+        _jSRuntime = jSRuntime;
+        _debouncer = new Debouncer();
+    }
+
+
+    public async Task<List<ProgramModel>> GetAll(int timeout = 250)
+    {
+        TaskCompletionSource<List<ProgramModel>> tcs = new();
+
+        _debouncer.Debounce(async () =>
+        {
+            try
+            {
+                List<RawProgramModel> raw_programs = await _jSRuntime.InvokeAsync<List<RawProgramModel>>("getAllProgram");
+                tcs.SetResult([.. raw_programs.Select(val => val.Extract())]);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
+
+        }, timeout);
+
+        return await tcs.Task;
+    }
+
+
+    public void Dispose()
+    {
+        _debouncer.Dispose();
     }
 }
