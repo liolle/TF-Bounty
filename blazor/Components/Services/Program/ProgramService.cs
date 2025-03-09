@@ -6,7 +6,7 @@ namespace blazor.services;
 
 public interface IProgramService
 {
-    Task<List<ProgramModel>> GetAll(int timeout = 250);
+    Task<List<ProgramModel>> GetAll(string search="",int timeout = 250);
 }
 
 public class ProgramService : IProgramService, IDisposable
@@ -22,7 +22,7 @@ public class ProgramService : IProgramService, IDisposable
     }
 
 
-    public async Task<List<ProgramModel>> GetAll(int timeout = 250)
+    public async Task<List<ProgramModel>> GetAll(string search="",int timeout = 250)
     {
         TaskCompletionSource<List<ProgramModel>> tcs = new();
 
@@ -30,7 +30,7 @@ public class ProgramService : IProgramService, IDisposable
         {
             try
             {
-                List<RawProgramModel> raw_programs = await _jSRuntime.InvokeAsync<List<RawProgramModel>>("getAllProgram");
+                List<RawProgramModel> raw_programs = await _jSRuntime.InvokeAsync<List<RawProgramModel>>("getAllProgram",search);
                 tcs.SetResult([.. raw_programs.Select(val => val.Extract())]);
             }
             catch (Exception e)

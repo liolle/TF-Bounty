@@ -22,8 +22,8 @@ window.azureOauth = async (code, redirect_success_uri, redirect_failure_uri) => 
 
 }
 
-window.getAllProgram = async ()=> {
-    const response = await fetch('https://localhost:7294/program/get/all', {
+window.getAllProgram = async (search)=> {
+    const response = await fetch(`https://localhost:7294/program/get/all${search?"?search="+search:""}`, {
         method: "GET",
     })
 

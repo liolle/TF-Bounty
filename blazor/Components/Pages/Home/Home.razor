@@ -14,10 +14,18 @@
     <div class="main-container">
         <div class="navbar-spot"></div>
         <div class="main">
-            @foreach (ProgramModel program in programs)
-            {
-                <ProgramCard program="program" />
-            }
+            <div class="panel-container">
+                <div class="panel">
+                    <input @oninput="OnSearchInput"  placeholder="Search" type="text" >
+                </div>
+            </div>
+            <div class="program-display">
+
+                @foreach (ProgramModel program in programs)
+                {
+                    <ProgramCard program="program" />
+                }
+            </div>
         </div>
     </div>
 </div>

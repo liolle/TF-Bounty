@@ -77,9 +77,14 @@ public class ProgramController(IProgramService programService) : ControllerBase
     [HttpGet]
     [Route("/program/get/all")]
     [EnableCors("auth-input")]
-    public async Task<IActionResult> GetAllPrograms()
+    public async Task<IActionResult> GetAllPrograms([FromQuery] string search)
     {
-        QueryResult<List<ProgramEntity>> result = programService.Execute(new GetProgramsQuery());
+        QueryResult<List<ProgramEntity>> result = programService.Execute(
+            new GetProgramsQuery()
+            {
+                Search = search
+            }
+        );
 
         if (!result.IsSuccess)
         {

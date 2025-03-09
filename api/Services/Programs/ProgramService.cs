@@ -123,6 +123,7 @@ public partial class ProgramService
                 prog.description
             FROM [Users] u
             JOIN [Programs] prog ON u.id = prog.creator
+            {((query.Search is null) ? "" : "WHERE prog.title LIKE " + $"'%{query.Search}%'")}
             ";
 
             using SqlCommand cmd = new(sql_query, conn);
@@ -143,7 +144,7 @@ public partial class ProgramService
 
             return IQueryResult<List<ProgramEntity>>.Success(programs);
         }
-        catch (Exception)
+        catch (Exception e)
         {
             return IQueryResult<List<ProgramEntity>>.Failure("Server error");
         }
