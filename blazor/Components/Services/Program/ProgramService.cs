@@ -7,6 +7,7 @@ namespace blazor.services;
 public interface IProgramService
 {
     Task<List<ProgramModel>> GetAll(string search="",int timeout = 250);
+    Task Add(ProgramModel model);
 }
 
 public class ProgramService : IProgramService, IDisposable
@@ -47,5 +48,10 @@ public class ProgramService : IProgramService, IDisposable
     public void Dispose()
     {
         _debouncer.Dispose();
+    }
+
+    public async Task Add(ProgramModel model)
+    {
+        await _jSRuntime.InvokeAsync<List<RawProgramModel>>("addProgram",model);
     }
 }

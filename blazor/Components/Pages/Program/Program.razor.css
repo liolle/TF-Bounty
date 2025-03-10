@@ -1,0 +1,100 @@
+.c-page {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: hidden;
+}
+
+.form-main {
+    height: 100%;
+    color: azure;
+    font-family: monospace;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-style: italic;
+    font-size: 1rem;
+    user-select: none;
+    font-weight: bold;
+    gap: 2rem;
+}
+
+label {
+    display: flex;
+    align-items: center;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+}
+
+.form-element {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+}
+
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    height: 2rem;
+    font-size: 1rem;
+}
+
+.input {
+    width: 300px;
+}
+
+.form-input-error {
+    font-size: medium;
+    font-weight: lighter;
+    font-style: italic;
+    color: red;
+    height: 2rem;
+}
+
+.description {
+    height: fit-content;
+}
+
+
+button, .btn  {
+    font-family: monospace;
+    font-size: medium;
+    font-weight: lighter;
+    font-style: italic;
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    cursor: pointer;
+    background: azure;
+    color: #262626;
+    width: 150px;
+}
+
+.btn, button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0;
+}
+
+button:hover, .btn:hover {
+    background-color: green;
+}
+
+.btn-container {
+    display: flex;
+    gap: 1rem;
+}

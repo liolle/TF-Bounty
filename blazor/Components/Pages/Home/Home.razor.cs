@@ -19,6 +19,9 @@ public partial class Home
     [SupplyParameterFromQuery]
     public string? search { get; set; }
 
+    [Inject]
+    private NavigationManager? Navigation { get; set; }
+
     bool rendered_once = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -42,8 +45,14 @@ public partial class Home
     private async Task LoadPrograms(int timeout = 250)
     {
         if (programService is null) { return; }
-        programs = await programService.GetAll(search??"",timeout);
+        programs = await programService.GetAll(search ?? "", timeout);
         StateHasChanged();
+    }
+
+
+    private void CreateProgram()
+    {
+        Navigation?.NavigateTo("/program/create");
     }
 
     private async Task OnSearchInput(ChangeEventArgs e)

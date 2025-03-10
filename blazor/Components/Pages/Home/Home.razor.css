@@ -37,6 +37,9 @@
 
 .panel {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .panel input {
@@ -45,6 +48,12 @@
     font-size: small;
     padding: 0.25rem .5rem;
     border-radius: .25rem;
+}
+
+.panel .btn {
+    font-size: small;
+    font-weight: bold;
+    width: 100%;
 }
 
 .program-display {
@@ -61,4 +70,29 @@
 
 .program-display::-webkit-scrollbar {
     display: none;
+}
+
+
+button, .btn  {
+    font-family: monospace;
+    font-size: medium;
+    font-weight: lighter;
+    font-style: italic;
+    padding: .5rem .5rem;
+    border-radius: .25rem;
+    cursor: pointer;
+    background: azure;
+    color: #262626;
+    width: 150px;
+}
+
+.btn, button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0;
+}
+
+button:hover, .btn:hover {
+    background-color: green;
 }

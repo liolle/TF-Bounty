@@ -1,0 +1,63 @@
+@page "/program/create"
+
+<div class="c-page">
+
+    <div class="form-main">
+        <EditForm Model="Model" OnValidSubmit="HandleValidSubmit">
+            <div class="form-container">
+                <DataAnnotationsValidator />
+
+                <div class="form-element">
+                    <div class="form-input">
+                        <label for="@(() => Model.Title)">Title*</label>
+                        <InputText id="title" @bind-Value="Model.Title" class="input" />
+                    </div>
+                    <div class="form-input-error">
+                        <ValidationMessage For="@(() => Model.Title)" />
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-element">
+                    <div class="form-input ">
+                        <label for="@(() => Model.Reward)">Reward</label>
+                        <InputNumber id="Reward" @bind-Value="Model.Reward" class="input" />
+                    </div>
+                    <div class="form-input-error">
+                        <ValidationMessage For="@(() => Model.Reward)" />
+                    </div>
+                </div>
+
+                <div class="form-element">
+                    <div class="form-input">
+                        <label for="@(() => Model.Logo)">Logo</label>
+                        <InputText id="Logo" @bind-Value="Model.Logo" class="input"
+                            aria-placeholder="https://image.com/profile.png" />
+                    </div>
+                    <div class="form-input-error">
+                        <ValidationMessage For="@(() => Model.Logo)" />
+                    </div>
+                </div>
+                <div class="form-element">
+                    <div class="form-input description">
+                        <label for="@(() => Model.Description)">Description</label>
+                        <InputTextArea style="height: 200px;" id="description" @bind-Value="Model.Description" class="input" />
+                    </div>
+                    <div class="form-input-error">
+                        <ValidationMessage For="@(() => Model.Description)" />
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <button type="submit" class="btn">
+                        <span>Create</span>
+                    </button>
+                </div>
+
+
+            </div>
+        </EditForm>
+    </div>
+</div>

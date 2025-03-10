@@ -16,7 +16,12 @@
         <div class="main">
             <div class="panel-container">
                 <div class="panel">
-                    <input @oninput="OnSearchInput"  placeholder="Search" type="text" >
+                    <input @oninput="OnSearchInput" placeholder="Search" type="text">
+
+                    <AuthorizeView Roles="Bounty.Creator">
+                        <div @onclick="CreateProgram" class="btn">Create program</div>
+                    </AuthorizeView>
+
                 </div>
             </div>
             <div class="program-display">

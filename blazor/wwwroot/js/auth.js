@@ -40,3 +40,17 @@ window.getAllProgram = async (search)=> {
         return [];
     }
 }
+
+
+window.addProgram = async (model)=> {
+    const response = await fetch(`https://localhost:7294/program/create`, {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(model)
+    })
+
+    
+}
