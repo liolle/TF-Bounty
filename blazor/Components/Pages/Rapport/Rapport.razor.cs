@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using blazor.models;
 using blazor.services;
+using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -25,7 +26,7 @@ public partial class Rapport : ComponentBase
 
     ProgramModel? SelectedProgram = null;
 
-    bool rendered_once = false;
+    StandaloneCodeEditor? Editor {get;set;}
 
     protected override async Task OnInitializedAsync()
     {
@@ -47,7 +48,6 @@ public partial class Rapport : ComponentBase
         if (firstRender)
         {
             await LoadProgram();
-            rendered_once = true;
         }
     }
 
@@ -55,7 +55,27 @@ public partial class Rapport : ComponentBase
     {
         if (programService is null || Id is null) { return; }
         SelectedProgram = await programService.GetById(Id.Value, timeout);
-        Console.WriteLine("here");
         StateHasChanged();
+    }
+
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
+    {
+        Editor = editor;
+        return new StandaloneEditorConstructionOptions
+        {
+            Language = "markdown",
+            Value = "",
+            AutomaticLayout = true,
+            AutoIndent = "advanced",
+            Theme = "vs-dark",
+            AccessibilityPageSize = 1000,
+            WordBasedSuggestions = false,
+            WordWrap = "on"
+        };
+    }
+
+    private async Task HandleSubmit(){
+        if (Editor is null){return;}
+        Console.WriteLine(await Editor.GetValue());
     }
 }
