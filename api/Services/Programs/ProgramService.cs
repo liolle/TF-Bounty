@@ -149,4 +149,47 @@ public partial class ProgramService
             return IQueryResult<List<ProgramEntity>>.Failure("Server error");
         }
     }
+
+    public QueryResult<ProgramEntity> Execute(GetProgramByIdQuery query)
+    {
+        try
+        {
+            using SqlConnection conn = context.CreateConnection();
+
+            string sql_query = $@"
+            SELECT 
+                prog.id programId,
+                u.id userId,
+                prog.logo,
+                prog.reward,
+                prog.title,
+                prog.description
+            FROM [Users] u
+            JOIN [Programs] prog ON u.id = prog.creator
+            WHERE prog.id = @Id
+            ";
+
+            using SqlCommand cmd = new(sql_query, conn);
+            cmd.Parameters.AddWithValue("@Id", query.Id);
+            conn.Open();
+            using SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                ProgramEntity program = ProgramEntity.Create(
+                    (int)reader["programId"],
+                    (int)reader["userId"],
+                    (string)reader["logo"],
+                    (int)reader["reward"],
+                    (string)reader["title"],
+                    (string)reader["description"]
+                );
+                return IQueryResult<ProgramEntity>.Success(program);
+            }
+            return IQueryResult<ProgramEntity>.Failure("Program not found");
+        }
+        catch (Exception e)
+        {
+            return IQueryResult<ProgramEntity>.Failure("Server error");
+        }
+    }
 }

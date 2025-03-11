@@ -94,4 +94,25 @@ public class ProgramController(IProgramService programService) : ControllerBase
         await Task.CompletedTask;
         return Ok(result.Result);
     }
+
+    [HttpGet]
+    [Route("/program/get")]
+    [EnableCors("auth-input")]
+    public async Task<IActionResult> GetById([FromQuery] int id)
+    {
+        QueryResult<ProgramEntity> result = programService.Execute(
+            new GetProgramByIdQuery()
+            {
+                Id = id
+            }
+        );
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result.ErrorMessage);
+        }
+
+        await Task.CompletedTask;
+        return Ok(result.Result);
+    }
 }
