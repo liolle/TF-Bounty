@@ -9,7 +9,6 @@ namespace blazor.Components.Pages.Rapport;
 
 public partial class Rapport : ComponentBase
 {
-
     [Parameter]
     [SupplyParameterFromQuery]
     public int? Id { get; set; }
@@ -17,6 +16,8 @@ public partial class Rapport : ComponentBase
     [Inject]
     IProgramService? programService { get; set; }
 
+    [Inject]
+    IRapportService? rapportService { get; set; }
 
     [Inject]
     private NavigationManager? Navigation { get; set; }
@@ -26,7 +27,7 @@ public partial class Rapport : ComponentBase
 
     ProgramModel? SelectedProgram = null;
 
-    StandaloneCodeEditor? Editor {get;set;}
+    StandaloneCodeEditor? Editor { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -40,7 +41,6 @@ public partial class Rapport : ComponentBase
             Navigation?.NavigateTo("/");
             return;
         }
-
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -74,8 +74,16 @@ public partial class Rapport : ComponentBase
         };
     }
 
-    private async Task HandleSubmit(){
-        if (Editor is null){return;}
-        Console.WriteLine(await Editor.GetValue());
+    private async Task HandleSubmit()
+    {
+        if (Editor is null || rapportService is null || Id is null) { return; }
+        string content = await Editor.GetValue();
+        if (content.Trim(' ') == ""){return;}
+        await rapportService.Add(new()
+        {
+            Content = content,
+            ProgramId = Id.Value
+        });
+        Navigation?.NavigateTo("/");
     }
 }

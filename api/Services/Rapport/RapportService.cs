@@ -48,7 +48,7 @@ public partial class RapportService
             return ICommandResult.Success();
         }
 
-        catch (Exception e)
+        catch (Exception)
         {
             return ICommandResult.Failure("Server error");
         }

@@ -71,3 +71,15 @@ window.addProgram = async (model)=> {
         body: JSON.stringify(model)
     })
 }
+
+
+window.addRapport = async (model)=> {
+    const response = await fetch(`https://localhost:7294/rapport/create`, {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(model)
+    })
+}

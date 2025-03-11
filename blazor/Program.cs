@@ -21,6 +21,7 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthProvider>();
 builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddScoped<IProgramService,ProgramService>();
+builder.Services.AddScoped<IRapportService,RapportService>();
 
 var app = builder.Build();
 

@@ -53,7 +53,7 @@ public class ProgramService : IProgramService, IDisposable
 
     public async Task Add(ProgramModel model)
     {
-        await _jSRuntime.InvokeAsync<List<RawProgramModel>>("addProgram", model);
+        await _jSRuntime.InvokeVoidAsync("addProgram", model);
     }
 
     public async Task<ProgramModel?> GetById(int id, int timeout = 250)
