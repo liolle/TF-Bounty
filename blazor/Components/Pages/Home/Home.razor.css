@@ -29,9 +29,9 @@
 }
 
 .panel-container {
-    height: 500px;
-    width: 200px;
-    flex: 1;
+    
+    width: 400px;
+    flex-shrink: 0;
     padding: .5rem;
 }
 
@@ -40,6 +40,7 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    align-items: center;
 }
 
 .panel input {
@@ -58,6 +59,7 @@
 
 .program-display {
     height: 100%;
+    padding: .5rem 0;
     flex: 10;
     overflow-y: scroll;
     scrollbar-width: none;
@@ -86,6 +88,36 @@ button, .btn  {
     width: 150px;
 }
 
+.context-card-container {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    align-items: flex-end;
+}
+
+.context-card-container .btn {
+    background-color: #262626;
+    color: azure;
+    font-size: medium;
+    font-style: italic;
+    width: fit-content;
+    padding: .5rem 1rem;
+}
+
+.context-card-top {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 .5rem;
+}
+
+.context-card-top .del{
+    height: 2rem;
+    width: 2rem;
+    border-radius: 100%;
+    background-color: azure;
+    cursor: pointer;
+}
+
 .btn, button {
     display: flex;
     justify-content: center;
@@ -95,4 +127,15 @@ button, .btn  {
 
 button:hover, .btn:hover {
     background-color: green;
+}
+
+.card-active {
+    background-color: green;
+}
+
+.c-container:hover  {
+    border-radius: .5rem;
+    z-index: 10;
+    outline: 3px solid green;
+    height: fit-content;
 }

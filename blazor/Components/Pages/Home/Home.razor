@@ -14,6 +14,18 @@
     <div class="main-container">
         <div class="navbar-spot"></div>
         <div class="main">
+            <div class="program-display">
+
+                @foreach (ProgramModel program in programs)
+                {
+                    <div class="c-container" @onclick="(()=>HandleProgramClick(program))">
+                        <CascadingValue Value="@SelectedProgram">
+                            <ProgramCard program="program" />
+
+                        </CascadingValue>
+                    </div>
+                }
+            </div>
             <div class="panel-container">
                 <div class="panel">
                     <input @oninput="OnSearchInput" placeholder="Search" type="text">
@@ -22,14 +34,22 @@
                         <div @onclick="CreateProgram" class="btn">Create program</div>
                     </AuthorizeView>
 
-                </div>
-            </div>
-            <div class="program-display">
+                    <AuthorizeView Roles="Bounty.Hunter">
+                        @if (SelectedProgram is not null)
+                        {
+                            <div class="context-card-container">
+                                <div class="context-card-top">
+                                    <div @onclick="RemoveSelected" class="del">
+                                        
+                                    </div>
+                                </div>
+                                <ProgramCard program="@SelectedProgram" />
+                                <div class="btn">Report Bug</div>
+                            </div>
+                        }
+                    </AuthorizeView>
 
-                @foreach (ProgramModel program in programs)
-                {
-                    <ProgramCard program="program" />
-                }
+                </div>
             </div>
         </div>
     </div>

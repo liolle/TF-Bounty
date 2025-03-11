@@ -24,6 +24,8 @@ public partial class Home
 
     bool rendered_once = false;
 
+    ProgramModel? SelectedProgram = null;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -34,12 +36,14 @@ public partial class Home
 
     }
 
+
     protected override async Task OnParametersSetAsync()
     {
         if (rendered_once)
         {
             await LoadPrograms(1000);
         }
+        
     }
 
     private async Task LoadPrograms(int timeout = 250)
@@ -68,5 +72,15 @@ public partial class Home
             _navigation.NavigateTo($"/");
         }
         await Task.CompletedTask;
+    }
+
+    private void HandleProgramClick(ProgramModel model){
+        SelectedProgram = model;
+        StateHasChanged();
+    }
+
+     private void RemoveSelected(){
+        SelectedProgram = null;
+        StateHasChanged();
     }
 }

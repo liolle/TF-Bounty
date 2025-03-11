@@ -36,8 +36,10 @@ img {
     font-weight: bold;
 }
 
-.card-container:hover {
-    border: 1px solid green;
+.card-active{
+    border-radius: .5rem;
+    z-index: 10;
+    outline: 5px solid green;
 }
 
 .reward {
@@ -46,3 +48,4 @@ img {
     font-weight: bold;
     font-style: italic;
 }
+
