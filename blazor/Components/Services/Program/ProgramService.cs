@@ -6,7 +6,8 @@ namespace blazor.services;
 
 public interface IProgramService
 {
-    Task<List<ProgramModel>> GetAll(string search="",int timeout = 250);
+    Task<List<ProgramModel>> GetAll(string search = "", int timeout = 250);
+    Task<ProgramModel?> GetById(int id, int timeout = 250);
     Task Add(ProgramModel model);
 }
 
@@ -23,7 +24,7 @@ public class ProgramService : IProgramService, IDisposable
     }
 
 
-    public async Task<List<ProgramModel>> GetAll(string search="",int timeout = 250)
+    public async Task<List<ProgramModel>> GetAll(string search = "", int timeout = 250)
     {
         TaskCompletionSource<List<ProgramModel>> tcs = new();
 
@@ -31,7 +32,7 @@ public class ProgramService : IProgramService, IDisposable
         {
             try
             {
-                List<RawProgramModel> raw_programs = await _jSRuntime.InvokeAsync<List<RawProgramModel>>("getAllProgram",search);
+                List<RawProgramModel> raw_programs = await _jSRuntime.InvokeAsync<List<RawProgramModel>>("getAllProgram", search);
                 tcs.SetResult([.. raw_programs.Select(val => val.Extract())]);
             }
             catch (Exception e)
@@ -52,6 +53,34 @@ public class ProgramService : IProgramService, IDisposable
 
     public async Task Add(ProgramModel model)
     {
-        await _jSRuntime.InvokeAsync<List<RawProgramModel>>("addProgram",model);
+        await _jSRuntime.InvokeAsync<List<RawProgramModel>>("addProgram", model);
+    }
+
+    public async Task<ProgramModel?> GetById(int id, int timeout = 250)
+    {
+        TaskCompletionSource<ProgramModel?> tcs = new();
+
+        _debouncer.Debounce(async () =>
+        {
+            try
+            {
+                RawProgramModel? raw_programs = await _jSRuntime.InvokeAsync<RawProgramModel?>("getProgramById", id);
+                if (raw_programs is not null)
+                {
+                    tcs.SetResult(raw_programs.Extract());
+                }
+                else
+                {
+                    tcs.SetResult(null);
+                }
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
+
+        }, timeout);
+
+        return await tcs.Task;
     }
 }

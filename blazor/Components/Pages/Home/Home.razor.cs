@@ -33,17 +33,6 @@ public partial class Home
             await LoadPrograms();
             rendered_once = true;
         }
-
-    }
-
-
-    protected override async Task OnParametersSetAsync()
-    {
-        if (rendered_once)
-        {
-            await LoadPrograms(1000);
-        }
-        
     }
 
     private async Task LoadPrograms(int timeout = 250)
@@ -53,10 +42,15 @@ public partial class Home
         StateHasChanged();
     }
 
-
     private void CreateProgram()
     {
         Navigation?.NavigateTo("/program/create");
+    }
+
+    private void CreateRapport()
+    {
+        if (SelectedProgram is null){return;}
+        Navigation?.NavigateTo($"/rapport/create?id={SelectedProgram.Id}");
     }
 
     private async Task OnSearchInput(ChangeEventArgs e)
@@ -74,12 +68,14 @@ public partial class Home
         await Task.CompletedTask;
     }
 
-    private void HandleProgramClick(ProgramModel model){
+    private void HandleProgramClick(ProgramModel model)
+    {
         SelectedProgram = model;
         StateHasChanged();
     }
 
-     private void RemoveSelected(){
+    private void RemoveSelected()
+    {
         SelectedProgram = null;
         StateHasChanged();
     }

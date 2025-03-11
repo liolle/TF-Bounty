@@ -41,6 +41,25 @@ window.getAllProgram = async (search)=> {
     }
 }
 
+window.getProgramById = async (id)=> {
+    const response = await fetch(`https://localhost:7294/program/get?id=${id}`, {
+        method: "GET",
+    })
+
+    if (!response.ok){
+        return null;
+    }
+
+    const content = await  response.json()
+    
+    try {
+        return content
+    } catch (error) {
+        console.log(error)
+        return null;
+    }
+}
+
 
 window.addProgram = async (model)=> {
     const response = await fetch(`https://localhost:7294/program/create`, {
@@ -51,6 +70,4 @@ window.addProgram = async (model)=> {
         },
         body: JSON.stringify(model)
     })
-
-    
 }
