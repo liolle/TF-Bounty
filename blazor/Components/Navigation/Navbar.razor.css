@@ -97,6 +97,10 @@ button:hover, .btn:hover {
     color: green;
 }
 
+.nav-link-container {
+    width: fit-content;
+}
+
 .active-link {
     color: green;
     text-decoration-line: underline;

@@ -1,4 +1,5 @@
 @page "/myReport"
+@using BlazorMonaco.Editor
 @using blazor.Components.Cards.ProgramCard
 @using blazor.Components.Cards.ReportCard
 @using blazor.models
@@ -15,22 +16,32 @@
         <div class="main">
             <div class="report-display">
                 <div class="report-main">
-                @foreach (ReportModel report in reports)
-                {
-                    <div class="c-container" @onclick="(()=>HandleReportClick(report))">
-                        <CascadingValue Value="@SelectedReport">
-                            <ReportCard Report="@report" />
-                        </CascadingValue>
-                    </div>
-                }
-
+                    @foreach (ReportModel report in reports)
+                    {
+                        <div class="c-container" @onclick="(()=>HandleReportClick(report))">
+                            <CascadingValue Value="@SelectedReport">
+                                <ReportCard Report="@report" />
+                            </CascadingValue>
+                        </div>
+                    }
                 </div>
 
+            </div>
+            <div class="editor-display">
+                @if (SelectedProgram is not null)
+                {
+                    <StandaloneCodeEditor id="rapport-editor" ConstructionOptions="EditorConstructionOptions" />
+                }
             </div>
             <div class="panel-container">
                 @if (SelectedProgram is not null)
                 {
                     <div class="context-card-container">
+                        <div class="context-card-top">
+                            <div @onclick="RemoveSelected" class="del">
+
+                            </div>
+                        </div>
                         <ProgramCard program="@SelectedProgram" />
                         <div class="panel-resume">
 
@@ -47,5 +58,6 @@
 <style>
     .monaco-editor-container {
         width: 100%;
+        height: calc(100vh - 5rem);
     }
 </style>

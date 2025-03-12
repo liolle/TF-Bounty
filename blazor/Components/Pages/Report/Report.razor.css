@@ -29,7 +29,7 @@
 }
 
 .panel-container {
-    
+
     width: 400px;
     flex-shrink: 0;
     padding: .5rem;
@@ -90,6 +90,7 @@ button, .btn  {
 .context-card-container {
     display: flex;
     flex-direction: column;
+    padding: 0 .5rem;
     gap: .5rem;
     align-items: flex-end;
 }
@@ -144,3 +145,61 @@ button:hover, .btn:hover {
     height: fit-content;
 }
 
+
+.form-main {
+    height: 100%;
+    color: azure;
+    font-family: monospace;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-style: italic;
+    font-size: 1rem;
+    user-select: none;
+    font-weight: bold;
+    gap: 2rem;
+}
+
+label {
+    display: flex;
+    align-items: center;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+}
+
+.form-element {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+}
+
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    height: 2rem;
+    font-size: 1rem;
+}
+
+.input {
+    width: 300px;
+}
+
+.form-input-error {
+    font-size: medium;
+    font-weight: lighter;
+    font-style: italic;
+    color: red;
+    height: 2rem;
+}

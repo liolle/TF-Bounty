@@ -1,24 +1,10 @@
-.logo {
-    height: fit-content;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 .5rem 0 0;
-}
-
-img {
-    object-fit: contain;
-    height: 2rem;
-}
-
 .card-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 0 .5rem;
-    border: 1px solid azure;
-    border-radius: .5rem;
+    padding: .25rem .5rem;
+    outline: 1px solid azure;
+    border-radius: .25rem;
     width: 20rem;
     gap: .5rem;
     color: azure;
@@ -27,17 +13,47 @@ img {
     height: 4rem;
 }
 
-.description {
+.createdAt {
     font-size: small;
-    height: 100%;
+
+    font-size: small;
+    font-style: italic;
+    color: grey;
+}
+
+.bottom-bar {
+    display: flex;
+    justify-content: space-between;
 }
 
 .title {
     font-weight: bold;
+    font-size: small;
+    font-style: italic;
 }
 
-.card-active{
-    border-radius: .5rem;
+
+
+.status {
+    font-size: small;
+}
+
+.card-active {
+    border-radius: .25rem;
     z-index: 10;
     outline: 5px solid green;
+}
+
+.status.pending::after {
+    content: " ...";
+}
+
+.status.validated {
+    color: green;
+    font-weight: bold;
+}
+
+.status.rejected {
+    color: red;
+    font-weight: bold;
 }

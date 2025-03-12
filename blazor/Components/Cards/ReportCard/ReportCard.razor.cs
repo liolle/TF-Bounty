@@ -18,7 +18,7 @@ public partial class ReportCard : ComponentBase
 
     protected override void OnInitialized()
     {
-       
+
     }
 
     private string GetActive()
@@ -31,5 +31,15 @@ public partial class ReportCard : ComponentBase
             }
         }
         return "";
+    }
+
+    private string GetStatus()
+    {
+        if (Report is null)
+        {
+            return "";
+        }
+
+        return Report.Status;
     }
 }

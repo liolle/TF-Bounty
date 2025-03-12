@@ -25,6 +25,8 @@ public partial class Report : ComponentBase
     [Inject]
     private AuthenticationStateProvider? AuthProvider { get; set; }
 
+    public ReportModel Model { get; set; } = new();
+
     ProgramModel? SelectedProgram = null;
 
     StandaloneCodeEditor? Editor { get; set; }
@@ -61,6 +63,7 @@ public partial class Report : ComponentBase
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
         Editor = editor;
+
         return new StandaloneEditorConstructionOptions
         {
             Language = "markdown",
@@ -82,7 +85,7 @@ public partial class Report : ComponentBase
         await rapportService.Add(new()
         {
             Content = content,
-            ProgramId = Id.Value
+            ProgramId = Id.Value,
         });
         Navigation?.NavigateTo("/");
     }

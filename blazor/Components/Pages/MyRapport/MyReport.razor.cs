@@ -1,6 +1,8 @@
+using System.Data;
 using System.Security.Claims;
 using blazor.models;
 using blazor.services;
+using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -25,6 +27,8 @@ public partial class MyReport : ComponentBase
     ProgramModel? SelectedProgram = null;
 
     List<ReportModel> reports = [];
+
+    StandaloneCodeEditor? Editor { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -55,12 +59,51 @@ public partial class MyReport : ComponentBase
         StateHasChanged();
     }
 
-    private async Task HandleReportClick(ReportModel model)
+    private async Task UpdateSelection(ReportModel model)
     {
         if (programService is null) { return; }
         if (SelectedReport is not null && model.Id == SelectedReport.Id) { return; }
         SelectedReport = model;
-        SelectedProgram = await programService.GetById(model.ProgramId);
+        SelectedProgram = await programService.GetById(model.ProgramId, 500);
+    }
+
+    private async Task HandleReportClick(ReportModel model)
+    {
+
+
+        await UpdateSelection(model);
+        if (Editor is not null && SelectedReport is not null)
+        {
+            await Editor.SetValue(SelectedReport.Content);
+        }
         StateHasChanged();
+
+    }
+
+
+    private void RemoveSelected()
+    {
+        SelectedProgram = null;
+        SelectedReport = null;
+        StateHasChanged();
+    }
+
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
+    {
+        Editor = editor;
+
+        return new StandaloneEditorConstructionOptions
+        {
+            Language = "markdown",
+            Value = SelectedReport?.Content ?? "",
+            AutomaticLayout = true,
+            AutoIndent = "advanced",
+            Theme = "vs-dark",
+            AccessibilityPageSize = 1000,
+            WordBasedSuggestions = false,
+            WordWrap = "on",
+            ReadOnly = true,
+            Model = null
+        };
     }
 }

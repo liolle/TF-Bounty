@@ -24,7 +24,6 @@ public class RapportService(IJSRuntime jSRuntime) : IRapportService
     public async Task<List<ReportModel>> GetUserReport(int timeout = 250)
     {
 
-
         TaskCompletionSource<List<ReportModel>> tcs = new();
 
         _debouncer.Debounce(async () =>

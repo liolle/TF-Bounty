@@ -59,26 +59,30 @@
 .report-display {
     height: calc(100vh - 5rem);
     box-sizing: border-box;
-    padding: 0 0 2rem 0;
-    flex: 10;
+    padding: 1rem;
     overflow-y: scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    width: fit-content;
 }
 
 .report-main {
     display: flex;
     padding: .5rem 0 0 0;
-    width: 100%;
     gap: 2rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    width: fit-content;
     justify-content: space-evenly;
+    
 }
 
 .report-display::-webkit-scrollbar {
     display: none;
 }
 
+.editor-display {
+    flex: 1;
+}
 
 button, .btn  {
     font-family: monospace;
@@ -144,8 +148,9 @@ button:hover, .btn:hover {
 }
 
 .c-container:hover  {
-    border-radius: .5rem;
+    border-radius: .25rem;
     z-index: 10;
-    outline: 3px solid green;
+    outline: 5px solid green;
     height: fit-content;
+    width: fit-content;
 }

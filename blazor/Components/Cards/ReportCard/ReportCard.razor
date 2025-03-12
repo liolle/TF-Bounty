@@ -1,7 +1,16 @@
 <div class="card-container @GetActive()">
-   
-    <div class="content">
-        <span>@Report?.ProgramId</span>
-    </div>
+
+    @if (Report is not null)
+    {
+        <div class="title">
+            <span>@Report.Title</span>
+
+        </div>
+
+        <div class="bottom-bar">
+            <span class="status @GetStatus()">@Report.Status</span>
+             <span class="createdAt">@Report.CreatedAt.ToShortDateString()</span>
+        </div>
+    }
 
 </div>
