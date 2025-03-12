@@ -187,7 +187,7 @@ public partial class ProgramService
             }
             return IQueryResult<ProgramEntity>.Failure("Program not found");
         }
-        catch (Exception e)
+        catch (Exception )
         {
             return IQueryResult<ProgramEntity>.Failure("Server error");
         }

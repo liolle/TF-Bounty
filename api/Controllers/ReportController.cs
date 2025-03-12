@@ -1,4 +1,5 @@
 using api.CQS;
+using api.database.entities;
 using api.models;
 using api.services;
 using Microsoft.AspNetCore.Authorization;
@@ -7,11 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.controller;
 
-public class RapportController(IRapportService rapportService) : ControllerBase
+public class ReportController(IReportService reportService) : ControllerBase
 {
-    
+
     [HttpPost]
-    [Route("/rapport/create")]
+    [Route("/report/create")]
     [Authorize(Roles = "Bounty.Hunter")]
     [EnableCors("auth-input")]
     public async Task<IActionResult> Create([FromBody] AddRapportModel model)
@@ -27,7 +28,7 @@ public class RapportController(IRapportService rapportService) : ControllerBase
             return BadRequest("Invalid model");
         }
 
-        CommandResult result = rapportService.Execute(
+        CommandResult result = reportService.Execute(
             new CreateRapportCommand(
                 model.ProgramId,
                 oid,
@@ -39,8 +40,33 @@ public class RapportController(IRapportService rapportService) : ControllerBase
         {
             return BadRequest(result.ErrorMessage);
         }
-        
+
         await Task.CompletedTask;
         return Ok();
+    }
+
+
+    [HttpGet]
+    [Route("/report/get/me")]
+    [Authorize(Roles = "Bounty.Hunter")]
+    [EnableCors("auth-input")]
+    public async Task<IActionResult> GetUserReport()
+    {
+
+        string? oid = User.Claims.FirstOrDefault(c => c.Type == CustomClaimTypes.Oid)?.Value;
+        if (oid is null)
+        {
+            return BadRequest("Malformed token");
+        }
+
+        QueryResult<List<ReportEntity>> result = reportService.Execute(new GetUserReportQuery(oid));
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result.ErrorMessage);
+        }
+
+        await Task.CompletedTask;
+        return Ok(result.Result);
     }
 }

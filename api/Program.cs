@@ -68,7 +68,7 @@ builder.Services.AddScoped<IJwtService,JwtService>();
 builder.Services.AddScoped<IDataContext,DataContext>();
 builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<IProgramService,ProgramService>();
-builder.Services.AddScoped<IRapportService,RapportService>();
+builder.Services.AddScoped<IReportService,ReportService>();
 
 var app = builder.Build();
 
