@@ -8,8 +8,13 @@
         </div>
 
         <div class="bottom-bar">
-            <span class="status @GetStatus()">@Report.Status</span>
-             <span class="createdAt">@Report.CreatedAt.ToShortDateString()</span>
+            @if (!IsIssue)
+            {
+                <span class="status @GetStatus()">@Report.Status</span>
+            }else {
+                <span class=""></span>
+            }
+            <span class="createdAt">@Report.CreatedAt.ToShortDateString()</span>
         </div>
     }
 

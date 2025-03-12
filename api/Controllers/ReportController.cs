@@ -70,4 +70,23 @@ public class ReportController(IReportService reportService) : ControllerBase
         await Task.CompletedTask;
         return Ok(result.Result);
     }
+
+    [HttpGet]
+    [Route("/report/get/pending")]
+    [Authorize(Roles = "Admin")]
+    [EnableCors("auth-input")]
+    public async Task<IActionResult> GetPendingReport()
+    {
+
+
+        QueryResult<List<ReportEntity>> result = reportService.Execute(new GetPendingReportQuery());
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result.ErrorMessage);
+        }
+
+        await Task.CompletedTask;
+        return Ok(result.Result);
+    }
 }

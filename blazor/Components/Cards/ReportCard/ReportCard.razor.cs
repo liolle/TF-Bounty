@@ -10,6 +10,9 @@ public partial class ReportCard : ComponentBase
     public ReportModel? Report { get; set; }
 
     [Parameter]
+    public bool IsIssue {get;set;} = false;
+
+    [Parameter]
     public bool highlight { get; set; } = true;
 
     [CascadingParameter]

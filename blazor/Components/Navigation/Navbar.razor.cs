@@ -73,7 +73,12 @@ public partial class Navbar : ComponentBase
 
     public void NavigateToReport()
     {
-          Navigation?.NavigateTo("/myReport");
+        Navigation?.NavigateTo("/myReport");
+    }
+
+    public void NavigateToIssues()
+    {
+        Navigation?.NavigateTo("/issues");
     }
 
 

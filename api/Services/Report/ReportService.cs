@@ -106,4 +106,43 @@ public partial class ReportService
             return IQueryResult<List<ReportEntity>>.Failure("Server error");
         }
     }
+
+    public QueryResult<List<ReportEntity>> Execute(GetPendingReportQuery query)
+    {
+        try
+        {
+            using SqlConnection conn = context.CreateConnection();
+            List<ReportEntity> reports = [];
+
+            string sql_query = $@"
+            SELECT 
+                *
+            FROM [Rapports] u
+            WHERE [status] = 'pending'
+            ";
+
+            using SqlCommand cmd = new(sql_query, conn);
+            conn.Open();
+            using SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                ReportEntity report = ReportEntity.Create(
+                    (int)reader["id"],
+                    (int)reader["creator"],
+                    (int)reader["programId"],
+                    (string)reader["title"],
+                    (string)reader["content"],
+                    (string)reader["status"],
+                    (DateTime)reader["createdAt"]
+                );
+                reports.Add(report);
+            }
+
+            return IQueryResult<List<ReportEntity>>.Success(reports);
+        }
+        catch (Exception)
+        {
+            return IQueryResult<List<ReportEntity>>.Failure("Server error");
+        }
+    }
 }

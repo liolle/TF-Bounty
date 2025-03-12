@@ -28,6 +28,20 @@
                     }
                 </div>
             </AuthorizeView>
+
+              <AuthorizeView Roles="Admin">
+                <div @onclick="NavigateToIssues" class="nav-link-container">
+
+                    @if (@Page == "issues")
+                    {
+                        <span class="nav-link active-link">Issues</span>
+                    }
+                    else
+                    {
+                        <span class="nav-link">Issues</span>
+                    }
+                </div>
+            </AuthorizeView>
         </div>
         <div class="navbar-right">
 

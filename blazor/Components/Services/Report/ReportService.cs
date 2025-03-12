@@ -8,6 +8,7 @@ public interface IRapportService
 {
     Task Add(ReportModel model);
     Task<List<ReportModel>> GetUserReport(int timeout = 250);
+    Task<List<ReportModel>> GetPendingReport(int timeout = 250);
 }
 
 public class RapportService(IJSRuntime jSRuntime) : IRapportService
@@ -31,6 +32,28 @@ public class RapportService(IJSRuntime jSRuntime) : IRapportService
             try
             {
                 List<RawReportModel> raw_programs = await _jSRuntime.InvokeAsync<List<RawReportModel>>("getUserReport");
+                tcs.SetResult([.. raw_programs.Select(val => val.Extract())]);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
+
+        }, timeout);
+
+        return await tcs.Task;
+    }
+
+    public async Task<List<ReportModel>> GetPendingReport(int timeout = 250)
+    {
+
+        TaskCompletionSource<List<ReportModel>> tcs = new();
+
+        _debouncer.Debounce(async () =>
+        {
+            try
+            {
+                List<RawReportModel> raw_programs = await _jSRuntime.InvokeAsync<List<RawReportModel>>("getPendingReport");
                 tcs.SetResult([.. raw_programs.Select(val => val.Extract())]);
             }
             catch (Exception e)
