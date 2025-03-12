@@ -41,6 +41,26 @@ window.getAllProgram = async (search)=> {
     }
 }
 
+window.getUserReport = async ()=> {
+    const response = await fetch(`https://localhost:7294/report/get/me`, {
+        credentials: 'include',
+        method: "GET",
+    })
+
+    if (!response.ok){
+        return [];
+    }
+
+    const content = await  response.json()
+    
+    try {
+        return content
+    } catch (error) {
+        console.log(error)
+        return [];
+    }
+}
+
 window.getProgramById = async (id)=> {
     const response = await fetch(`https://localhost:7294/program/get?id=${id}`, {
         method: "GET",
@@ -74,7 +94,7 @@ window.addProgram = async (model)=> {
 
 
 window.addRapport = async (model)=> {
-    const response = await fetch(`https://localhost:7294/rapport/create`, {
+    const response = await fetch(`https://localhost:7294/report/create`, {
         method: "POST",
         credentials: 'include',
         headers: {

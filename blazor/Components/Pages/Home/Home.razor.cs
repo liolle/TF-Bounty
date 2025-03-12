@@ -22,7 +22,6 @@ public partial class Home
     [Inject]
     private NavigationManager? Navigation { get; set; }
 
-    bool rendered_once = false;
 
     ProgramModel? SelectedProgram = null;
 
@@ -31,7 +30,6 @@ public partial class Home
         if (firstRender)
         {
             await LoadPrograms();
-            rendered_once = true;
         }
     }
 

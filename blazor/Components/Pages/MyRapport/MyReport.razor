@@ -1,12 +1,10 @@
-@page "/rapport/create"
-
-@using BlazorMonaco.Editor
-@using Microsoft.AspNetCore.Components.Authorization
+@page "/myReport"
 @using blazor.Components.Cards.ProgramCard
-@using blazor.Components.Navigation
+@using blazor.Components.Cards.ReportCard
+@using blazor.models
 @rendermode InteractiveServer
 
-<PageTitle>Rapport</PageTitle>
+<PageTitle>Report</PageTitle>
 
 <div class="c-page">
     <div class="absolute-nav">
@@ -15,22 +13,28 @@
     <div class="main-container">
         <div class="navbar-spot"></div>
         <div class="main">
-            <div class="program-display">
-                @if (Id is not null && SelectedProgram is not null)
+            <div class="report-display">
+                <div class="report-main">
+                @foreach (ReportModel report in reports)
                 {
-                    <StandaloneCodeEditor id="rapport-editor" ConstructionOptions="EditorConstructionOptions" />
+                    <div class="c-container" @onclick="(()=>HandleReportClick(report))">
+                        <CascadingValue Value="@SelectedReport">
+                            <ReportCard Report="@report" />
+                        </CascadingValue>
+                    </div>
                 }
+
+                </div>
+
             </div>
             <div class="panel-container">
-                @if (Id is not null && SelectedProgram is not null)
+                @if (SelectedProgram is not null)
                 {
                     <div class="context-card-container">
                         <ProgramCard program="@SelectedProgram" />
-                        <div class="panel-bottom">
+                        <div class="panel-resume">
 
-                            <div @onclick="HandleSubmit" class="btn">
-                                Submit
-                            </div>
+
 
                         </div>
                     </div>

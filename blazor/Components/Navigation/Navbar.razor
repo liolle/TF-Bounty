@@ -15,7 +15,19 @@
             </div>
         </div>
         <div class="navbar-center">
+            <AuthorizeView Roles="Bounty.Hunter">
+                <div @onclick="NavigateToReport" class="">
 
+                    @if (@Page == "myreport")
+                    {
+                        <span class="nav-link active-link">Reports</span>
+                    }
+                    else
+                    {
+                        <span class="nav-link">Reports</span>
+                    }
+                </div>
+            </AuthorizeView>
         </div>
         <div class="navbar-right">
 

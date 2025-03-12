@@ -5,9 +5,9 @@ using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace blazor.Components.Pages.Rapport;
+namespace blazor.Components.Pages.Report;
 
-public partial class Rapport : ComponentBase
+public partial class Report : ComponentBase
 {
     [Parameter]
     [SupplyParameterFromQuery]

@@ -90,6 +90,7 @@ button:hover, .btn:hover {
     font-style: italic;
     cursor: pointer;
     user-select: none;
+    color: azure;
 }
 
 .nav-link:hover {

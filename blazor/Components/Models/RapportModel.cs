@@ -1,22 +1,37 @@
 namespace blazor.models;
 
 
-public class RapportModel
+public class ReportModel
 {
+    public int Id { get; set; }
     public string Content { get; set; } = "";
     public int ProgramId { get; set; }
 
-    public RapportModel() { }
+    public ReportModel() { }
 
-    internal RapportModel(string content, int programId)
+    internal ReportModel(int id,string content, int programId)
     {
+        Id = id;
         Content = content;
         ProgramId = programId;
     }
 
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+        return ((ReportModel)obj).Id == Id;
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
 }
 
-public class RawRapportModel
+public class RawReportModel
 {
     public int Id { get; set; }
     public int Creator { get; set; }
@@ -25,8 +40,8 @@ public class RawRapportModel
 
     public DateTime CreatedAt { get; set; }
 
-    public RapportModel Extract()
+    public ReportModel Extract()
     {
-        return new RapportModel(Content, ProgramId);
+        return new ReportModel(Id,Content, ProgramId);
     }
 }

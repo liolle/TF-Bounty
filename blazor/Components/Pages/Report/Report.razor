@@ -1,0 +1,47 @@
+@page "/rapport/create"
+
+@using BlazorMonaco.Editor
+@using Microsoft.AspNetCore.Components.Authorization
+@using blazor.Components.Cards.ProgramCard
+@using blazor.Components.Navigation
+@rendermode InteractiveServer
+
+<PageTitle>Report</PageTitle>
+
+<div class="c-page">
+    <div class="absolute-nav">
+        <Navbar />
+    </div>
+    <div class="main-container">
+        <div class="navbar-spot"></div>
+        <div class="main">
+            <div class="program-display">
+                @if (Id is not null && SelectedProgram is not null)
+                {
+                            <StandaloneCodeEditor id="rapport-editor" ConstructionOptions="EditorConstructionOptions" />
+                }
+            </div>
+            <div class="panel-container">
+                @if (Id is not null && SelectedProgram is not null)
+                {
+                        <div class="context-card-container">
+                            <ProgramCard program="@SelectedProgram" />
+                            <div class="panel-bottom">
+
+                                <div @onclick="HandleSubmit" class="btn">
+                                    Submit
+                                </div>
+
+                            </div>
+                        </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .monaco-editor-container {
+        width: 100%;
+    }
+</style>

@@ -71,6 +71,11 @@ public partial class Navbar : ComponentBase
         Navigation?.NavigateTo("/");
     }
 
+    public void NavigateToReport()
+    {
+          Navigation?.NavigateTo("/myReport");
+    }
+
 
     public async Task Logout()
     {
