@@ -19,6 +19,8 @@ public partial class Home
     [SupplyParameterFromQuery]
     public string? search { get; set; }
 
+    bool renderOnce = false;
+
     [Inject]
     private NavigationManager? Navigation { get; set; }
 
@@ -27,9 +29,10 @@ public partial class Home
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (firstRender && !renderOnce)
         {
             await LoadPrograms();
+            renderOnce = true;
         }
     }
 
@@ -47,7 +50,7 @@ public partial class Home
 
     private void CreateRapport()
     {
-        if (SelectedProgram is null){return;}
+        if (SelectedProgram is null) { return; }
         Navigation?.NavigateTo($"/rapport/create?id={SelectedProgram.Id}");
     }
 
@@ -55,6 +58,9 @@ public partial class Home
     {
         if (_navigation is null) { return; }
         string? value = e.Value?.ToString();
+        search = value;
+        await LoadPrograms();
+
         if (value is not null && value != "")
         {
             _navigation.NavigateTo($"/?search={value}");
