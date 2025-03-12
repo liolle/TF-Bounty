@@ -29,7 +29,9 @@
 }
 
 .panel-container {
-
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
     width: 400px;
     flex-shrink: 0;
     padding: .5rem;
@@ -93,6 +95,7 @@ button, .btn  {
     padding: 0 .5rem;
     gap: .5rem;
     align-items: flex-end;
+    width: fit-content;
 }
 
 .context-card-container .btn {
@@ -120,7 +123,8 @@ button, .btn  {
 
 .panel-bottom{
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
+    width: 100%;
 }
 
 .btn, button {

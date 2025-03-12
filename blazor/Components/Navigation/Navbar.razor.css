@@ -83,6 +83,8 @@ button:hover, .btn:hover {
 
 .navbar-center {
     flex: 1;
+    display: flex;
+    gap: 1rem;
 }
 
 .nav-link {

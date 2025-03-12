@@ -32,6 +32,8 @@
     width: 400px;
     flex-shrink: 0;
     padding: .5rem;
+    display: flex;
+    justify-content: center;
 }
 
 .panel {
