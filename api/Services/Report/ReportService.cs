@@ -29,11 +29,12 @@ public partial class ReportService
             using SqlConnection conn = context.CreateConnection();
 
             string query = $@"
-            INSERT INTO [Rapports]([creator],[programId],[content])
-            VALUES(@Id,@programId,@Content)
+            INSERT INTO [Rapports]([title],[creator],[programId],[content])
+            VALUES(@Title,@Id,@programId,@Content)
             ";
 
             using SqlCommand cmd = new(query, conn);
+            cmd.Parameters.AddWithValue("@Title", command.Title);
             cmd.Parameters.AddWithValue("@Id", r.Result.Id);
             cmd.Parameters.AddWithValue("@ProgramId", command.ProgramId);
             cmd.Parameters.AddWithValue("@Content", command.Content);
@@ -90,6 +91,7 @@ public partial class ReportService
                     (int)reader["id"],
                     (int)reader["creator"],
                     (int)reader["programId"],
+                    (string)reader["title"],
                     (string)reader["content"],
                     (string)reader["status"],
                     (DateTime)reader["createdAt"]
@@ -99,7 +101,7 @@ public partial class ReportService
 
             return IQueryResult<List<ReportEntity>>.Success(reports);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return IQueryResult<List<ReportEntity>>.Failure("Server error");
         }

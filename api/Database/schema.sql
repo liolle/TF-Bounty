@@ -42,6 +42,7 @@ BEGIN
         [id]            [int] IDENTITY(1,1) NOT NULL,
         [creator]       [int] NOT NULL,
         [programId]     [int] NOT NULL,
+        [title]         [varchar](200) NOT NULL,
         [content]       [text],
         [status]        [varchar](20) NOT NULL CONSTRAINT DF_Rapport_Status DEFAULT 'pending',
         [createdAt]     [datetime] CONSTRAINT DF_Rapport_createdAt DEFAULT GETDATE() ,

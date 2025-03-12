@@ -30,6 +30,7 @@ public class ReportController(IReportService reportService) : ControllerBase
 
         CommandResult result = reportService.Execute(
             new CreateRapportCommand(
+                model.Title,
                 model.ProgramId,
                 oid,
                 model.Content
