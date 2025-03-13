@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Threading.Tasks;
 using blazor.models;
 using blazor.services;
 using BlazorMonaco.Editor;
@@ -9,11 +10,11 @@ namespace blazor.Components.Pages.Issue;
 
 public partial class Issue : ComponentBase
 {
-      [Inject]
+    [Inject]
     IProgramService? programService { get; set; }
 
     [Inject]
-    IRapportService? rapportService { get; set; }
+    IReportService? reportService { get; set; }
 
     [Inject]
     private NavigationManager? Navigation { get; set; }
@@ -52,8 +53,8 @@ public partial class Issue : ComponentBase
 
     private async Task LoadReports(int timeout = 250)
     {
-        if (rapportService is null) { return; }
-        reports = await rapportService.GetPendingReport(timeout);
+        if (reportService is null) { return; }
+        reports = await reportService.GetPendingReport(timeout);
         StateHasChanged();
     }
 
@@ -78,11 +79,43 @@ public partial class Issue : ComponentBase
 
     }
 
-
     private void RemoveSelected()
     {
         SelectedProgram = null;
         SelectedReport = null;
+        StateHasChanged();
+    }
+
+    private async Task ValidateReport()
+    {
+        if (reportService is null || SelectedReport is null)
+        {
+            return;
+        }
+
+        if (await reportService.ValidateReport("validated", SelectedReport.Id))
+        {
+            RemoveReport(SelectedReport.Id);
+        }
+    }
+
+    private async Task RejectReport()
+    {
+        if (reportService is null || SelectedReport is null)
+        {
+            return;
+        }
+
+        if (await reportService.ValidateReport("rejected", SelectedReport.Id))
+        {
+            RemoveReport(SelectedReport.Id);
+        }
+    }
+
+    private void RemoveReport(int id)
+    {
+        reports = reports.Where(val => val.Id != id).ToList();
+        RemoveSelected();
         StateHasChanged();
     }
 

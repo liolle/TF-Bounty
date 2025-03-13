@@ -54,6 +54,38 @@ public partial class ReportService
             return ICommandResult.Failure("Server error");
         }
     }
+
+    public CommandResult Execute(ValidateReportCommand command)
+    {
+        try
+        {
+            using SqlConnection conn = context.CreateConnection();
+
+            string query = $@"
+            UPDATE [Rapports]
+            SET [status] = @Status
+            WHERE [id] = @Id
+            ";
+
+            using SqlCommand cmd = new(query, conn);
+            cmd.Parameters.AddWithValue("@Status", command.State);
+            cmd.Parameters.AddWithValue("@Id", command.ReportId);
+            conn.Open();
+
+            int result = cmd.ExecuteNonQuery();
+            if (result < 1)
+            {
+                return ICommandResult.Failure("Rapport Update failed.");
+            }
+
+            return ICommandResult.Success();
+
+        }
+        catch (Exception)
+        {
+            return ICommandResult.Failure("Server error");
+        }
+    }
 }
 
 

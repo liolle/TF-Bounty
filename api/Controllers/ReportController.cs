@@ -15,7 +15,7 @@ public class ReportController(IReportService reportService) : ControllerBase
     [Route("/report/create")]
     [Authorize(Roles = "Bounty.Hunter")]
     [EnableCors("auth-input")]
-    public async Task<IActionResult> Create([FromBody] AddRapportModel model)
+    public IActionResult Create([FromBody] AddRapportModel model)
     {
         string? oid = User.Claims.FirstOrDefault(c => c.Type == CustomClaimTypes.Oid)?.Value;
         if (oid is null)
@@ -42,7 +42,6 @@ public class ReportController(IReportService reportService) : ControllerBase
             return BadRequest(result.ErrorMessage);
         }
 
-        await Task.CompletedTask;
         return Ok();
     }
 
@@ -51,7 +50,7 @@ public class ReportController(IReportService reportService) : ControllerBase
     [Route("/report/get/me")]
     [Authorize(Roles = "Bounty.Hunter")]
     [EnableCors("auth-input")]
-    public async Task<IActionResult> GetUserReport()
+    public IActionResult GetUserReport()
     {
 
         string? oid = User.Claims.FirstOrDefault(c => c.Type == CustomClaimTypes.Oid)?.Value;
@@ -67,7 +66,6 @@ public class ReportController(IReportService reportService) : ControllerBase
             return BadRequest(result.ErrorMessage);
         }
 
-        await Task.CompletedTask;
         return Ok(result.Result);
     }
 
@@ -75,9 +73,8 @@ public class ReportController(IReportService reportService) : ControllerBase
     [Route("/report/get/pending")]
     [Authorize(Roles = "Admin")]
     [EnableCors("auth-input")]
-    public async Task<IActionResult> GetPendingReport()
+    public IActionResult GetPendingReport()
     {
-
 
         QueryResult<List<ReportEntity>> result = reportService.Execute(new GetPendingReportQuery());
 
@@ -86,7 +83,34 @@ public class ReportController(IReportService reportService) : ControllerBase
             return BadRequest(result.ErrorMessage);
         }
 
-        await Task.CompletedTask;
         return Ok(result.Result);
     }
+
+    [HttpPatch]
+    [Route("/report/validate")]
+    [Authorize(Roles = "Admin")]
+    [EnableCors("auth-input")]
+    public IActionResult ValidateReport([FromQuery] string state, [FromQuery] int? id)
+    {
+
+        if (id is null)
+        {
+            return BadRequest("Missing report id");
+        }
+
+        if (state is null || (state != "validated" && state != "rejected"))
+        {
+            return BadRequest("Invalid query state, it should be 'validated' or 'rejected'");
+        }
+
+        CommandResult result = reportService.Execute(new ValidateReportCommand(id.Value, state));
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result.ErrorMessage);
+        }
+
+        return Ok();
+    }
+
 }

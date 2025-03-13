@@ -22,17 +22,17 @@ window.azureOauth = async (code, redirect_success_uri, redirect_failure_uri) => 
 
 }
 
-window.getAllProgram = async (search)=> {
-    const response = await fetch(`https://localhost:7294/program/get/all${search?"?search="+search:""}`, {
+window.getAllProgram = async (search) => {
+    const response = await fetch(`https://localhost:7294/program/get/all${search ? "?search=" + search : ""}`, {
         method: "GET",
     })
 
-    if (!response.ok){
+    if (!response.ok) {
         return [];
     }
 
-    const content = await  response.json()
-    
+    const content = await response.json()
+
     try {
         return content
     } catch (error) {
@@ -41,18 +41,18 @@ window.getAllProgram = async (search)=> {
     }
 }
 
-window.getUserReport = async ()=> {
+window.getUserReport = async () => {
     const response = await fetch(`https://localhost:7294/report/get/me`, {
         credentials: 'include',
         method: "GET",
     })
 
-    if (!response.ok){
+    if (!response.ok) {
         return [];
     }
 
-    const content = await  response.json()
-    
+    const content = await response.json()
+
     try {
         return content
     } catch (error) {
@@ -62,18 +62,18 @@ window.getUserReport = async ()=> {
 }
 
 
-window.getPendingReport = async ()=> {
+window.getPendingReport = async () => {
     const response = await fetch(`https://localhost:7294/report/get/pending`, {
         credentials: 'include',
         method: "GET",
     })
 
-    if (!response.ok){
+    if (!response.ok) {
         return [];
     }
 
-    const content = await  response.json()
-    
+    const content = await response.json()
+
     try {
         return content
     } catch (error) {
@@ -82,17 +82,28 @@ window.getPendingReport = async ()=> {
     }
 }
 
-window.getProgramById = async (id)=> {
+window.validateReport = async (state, id) => {
+    const response = await fetch(`https://localhost:7294/report/validate?state=${state}&id=${id}`, {
+        credentials: 'include',
+        method: "PATCH",
+    })
+
+    if (!response.ok) { return false }
+
+    return true
+}
+
+window.getProgramById = async (id) => {
     const response = await fetch(`https://localhost:7294/program/get?id=${id}`, {
         method: "GET",
     })
 
-    if (!response.ok){
+    if (!response.ok) {
         return null;
     }
 
-    const content = await  response.json()
-    
+    const content = await response.json()
+
     try {
         return content
     } catch (error) {
@@ -102,7 +113,7 @@ window.getProgramById = async (id)=> {
 }
 
 
-window.addProgram = async (model)=> {
+window.addProgram = async (model) => {
     const response = await fetch(`https://localhost:7294/program/create`, {
         method: "POST",
         credentials: 'include',
@@ -111,10 +122,14 @@ window.addProgram = async (model)=> {
         },
         body: JSON.stringify(model)
     })
+
+    if (!response.ok) { return false }
+
+    return true
 }
 
 
-window.addRapport = async (model)=> {
+window.addRapport = async (model) => {
     const response = await fetch(`https://localhost:7294/report/create`, {
         method: "POST",
         credentials: 'include',

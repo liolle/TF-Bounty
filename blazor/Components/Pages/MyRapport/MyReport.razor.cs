@@ -15,7 +15,7 @@ public partial class MyReport : ComponentBase
     IProgramService? programService { get; set; }
 
     [Inject]
-    IRapportService? rapportService { get; set; }
+    IReportService? rapportService { get; set; }
 
     [Inject]
     private NavigationManager? Navigation { get; set; }

@@ -60,6 +60,7 @@
 
 .report-display {
     height: calc(100vh - 5rem);
+    width: 20rem;
     box-sizing: border-box;
     padding: 1rem;
     overflow-y: scroll;
@@ -102,7 +103,7 @@ button, .btn  {
 .context-card-container {
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    gap: 1rem;
     align-items: flex-end;
 }
 
@@ -155,4 +156,28 @@ button:hover, .btn:hover {
     outline: 5px solid green;
     height: fit-content;
     width: fit-content;
+}
+
+.panel-resume{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.btn.validate,
+.btn.reject{
+    font-weight: bold;
+}
+
+.btn.validate{
+    background-color: green;
+}
+
+.btn.reject{
+    background-color: red;
+}
+
+.validate:hover,
+.reject:hover {
+    outline: 3px solid azure;
 }

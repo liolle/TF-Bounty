@@ -4,14 +4,15 @@ using Microsoft.JSInterop;
 
 namespace blazor.services;
 
-public interface IRapportService
+public interface IReportService
 {
     Task Add(ReportModel model);
     Task<List<ReportModel>> GetUserReport(int timeout = 250);
     Task<List<ReportModel>> GetPendingReport(int timeout = 250);
+    Task<bool> ValidateReport(string state, int id);
 }
 
-public class RapportService(IJSRuntime jSRuntime) : IRapportService
+public class ReportService(IJSRuntime jSRuntime) : IReportService
 {
 
     private readonly IJSRuntime _jSRuntime = jSRuntime;
@@ -62,6 +63,26 @@ public class RapportService(IJSRuntime jSRuntime) : IRapportService
             }
 
         }, timeout);
+
+        return await tcs.Task;
+    }
+
+    public async Task<bool> ValidateReport(string state, int id)
+    {
+        TaskCompletionSource<bool> tcs = new();
+
+        _debouncer.Debounce(async () =>
+        {
+            try
+            {
+                bool res = await _jSRuntime.InvokeAsync<bool>("validateReport", state, id);
+                tcs.SetResult(res);
+            }
+            catch (Exception e)
+            {
+                tcs.SetException(e);
+            }
+        });
 
         return await tcs.Task;
     }

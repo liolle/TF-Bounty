@@ -17,7 +17,7 @@ public partial class Report : ComponentBase
     IProgramService? programService { get; set; }
 
     [Inject]
-    IRapportService? rapportService { get; set; }
+    IReportService? rapportService { get; set; }
 
     [Inject]
     private NavigationManager? Navigation { get; set; }
@@ -84,6 +84,7 @@ public partial class Report : ComponentBase
         if (content.Trim(' ') == ""){return;}
         await rapportService.Add(new()
         {
+            Title = Model.Title,
             Content = content,
             ProgramId = Id.Value,
         });
