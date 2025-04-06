@@ -1,6 +1,6 @@
-using System.Security.Claims;
 using api.CQS;
 using api.database.entities;
+using api.middlewares;
 using api.models;
 using api.services;
 using Microsoft.AspNetCore.Authorization;
@@ -16,6 +16,7 @@ public class ProgramController(IProgramService programService) : ControllerBase
     [Route("/program/create")]
     [Authorize(Roles = "Bounty.Creator")]
     [EnableCors("auth-input")]
+    [ValidateCsrf]
     public async Task<IActionResult> Create([FromBody] AddProgramModel model)
     {
         string? oid = User.Claims.FirstOrDefault(c => c.Type == CustomClaimTypes.Oid)?.Value;

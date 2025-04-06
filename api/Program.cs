@@ -1,6 +1,8 @@
 using System.Text;
 using api.database;
+using api.middlewares;
 using api.services;
+using csrf;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -62,7 +64,7 @@ builder.Services.AddCors(options=>{
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddSingleton<CsrfService>();
 builder.Services.AddScoped<HttpClient>();
 builder.Services.AddScoped<IJwtService,JwtService>();
 builder.Services.AddScoped<IDataContext,DataContext>();
@@ -83,6 +85,7 @@ app.UseHttpsRedirection();
 app.UseCors();
 
 app.UseAuthorization();
+app.UseMiddleware<CsrfMiddleware>();
 
 app.MapControllers();
 app.Run();
