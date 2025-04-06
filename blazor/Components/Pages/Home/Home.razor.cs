@@ -5,13 +5,17 @@ using Microsoft.AspNetCore.Components;
 namespace blazor.Components.Pages.Home;
 
 
-public partial class Home
+[RequireCsrfToken]
+public partial class Home : ComponentBase
 {
     [Inject]
     IProgramService? programService { get; set; }
 
     [Inject]
     NavigationManager? _navigation { get; set; }
+
+    [Inject]
+    IHttpContextAccessor? httpContext {get;set;}
 
     List<ProgramModel> programs = [];
 

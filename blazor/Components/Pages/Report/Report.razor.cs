@@ -7,87 +7,89 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace blazor.Components.Pages.Report;
 
+[RequireCsrfToken]
 public partial class Report : ComponentBase
 {
-    [Parameter]
-    [SupplyParameterFromQuery]
-    public int? Id { get; set; }
+  [Parameter]
+  [SupplyParameterFromQuery]
+  public int? Id { get; set; }
 
-    [Inject]
-    IProgramService? programService { get; set; }
+  [Inject]
+  IProgramService? programService { get; set; }
 
-    [Inject]
-    IReportService? rapportService { get; set; }
+  [Inject]
+  IReportService? rapportService { get; set; }
 
-    [Inject]
-    private NavigationManager? Navigation { get; set; }
+  [Inject]
+  private NavigationManager? Navigation { get; set; }
 
-    [Inject]
-    private AuthenticationStateProvider? AuthProvider { get; set; }
+  [Inject]
+  private AuthenticationStateProvider? AuthProvider { get; set; }
 
-    public ReportModel Model { get; set; } = new();
+  public ReportModel Model { get; set; } = new();
 
-    ProgramModel? SelectedProgram = null;
+  ProgramModel? SelectedProgram = null;
 
-    StandaloneCodeEditor? Editor { get; set; }
+  StandaloneCodeEditor? Editor { get; set; }
 
-    protected override async Task OnInitializedAsync()
+  protected override async Task OnInitializedAsync()
+  {
+    if (AuthProvider is null) { return; }
+    var authState = await AuthProvider.GetAuthenticationStateAsync();
+    var user = authState.User;
+
+    bool isBountyCreator = user.Claims.Where(claim => claim.Type == ClaimTypes.Role).Any(claim => claim.Value == "Bounty.Hunter");
+    if (!isBountyCreator)
     {
-        if (AuthProvider is null) { return; }
-        var authState = await AuthProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        bool isBountyCreator = user.Claims.Where(claim => claim.Type == ClaimTypes.Role).Any(claim => claim.Value == "Bounty.Hunter");
-        if (!isBountyCreator)
-        {
-            Navigation?.NavigateTo("/");
-            return;
-        }
+      Navigation?.NavigateTo("/");
+      return;
     }
+  }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender)
     {
-        if (firstRender)
-        {
-            await LoadProgram();
-        }
+      await LoadProgram();
     }
+  }
 
-    private async Task LoadProgram(int timeout = 250)
+  private async Task LoadProgram(int timeout = 250)
+  {
+    if (programService is null || Id is null) { return; }
+    SelectedProgram = await programService.GetById(Id.Value, timeout);
+    StateHasChanged();
+  }
+
+  private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
+  {
+    Editor = editor;
+
+    return new StandaloneEditorConstructionOptions
     {
-        if (programService is null || Id is null) { return; }
-        SelectedProgram = await programService.GetById(Id.Value, timeout);
-        StateHasChanged();
-    }
+      Language = "markdown",
+               Value = "",
+               AutomaticLayout = true,
+               AutoIndent = "advanced",
+               Theme = "vs-dark",
+               AccessibilityPageSize = 1000,
+               WordBasedSuggestions = false,
+               WordWrap = "on"
+    };
+  }
 
-    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
-    {
-        Editor = editor;
+  private async Task HandleSubmit()
+  {
+    if (Editor is null || rapportService is null || Id is null ) { return; }
+    string content = await Editor.GetValue();
+    if (content.Trim(' ') == ""){return;}
 
-        return new StandaloneEditorConstructionOptions
+    await rapportService.Add(new()
         {
-            Language = "markdown",
-            Value = "",
-            AutomaticLayout = true,
-            AutoIndent = "advanced",
-            Theme = "vs-dark",
-            AccessibilityPageSize = 1000,
-            WordBasedSuggestions = false,
-            WordWrap = "on"
-        };
-    }
-
-    private async Task HandleSubmit()
-    {
-        if (Editor is null || rapportService is null || Id is null) { return; }
-        string content = await Editor.GetValue();
-        if (content.Trim(' ') == ""){return;}
-        await rapportService.Add(new()
-        {
-            Title = Model.Title,
-            Content = content,
-            ProgramId = Id.Value,
+        Title = Model.Title,
+        Content = content,
+        ProgramId = Id.Value,
         });
-        Navigation?.NavigateTo("/");
-    }
+    Navigation?.NavigateTo("/");
+  }
 }

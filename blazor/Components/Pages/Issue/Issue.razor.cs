@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using System.Threading.Tasks;
 using blazor.models;
 using blazor.services;
 using BlazorMonaco.Editor;
@@ -8,6 +7,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace blazor.Components.Pages.Issue;
 
+[RequireCsrfToken]
 public partial class Issue : ComponentBase
 {
     [Inject]
@@ -68,73 +68,73 @@ public partial class Issue : ComponentBase
 
     private async Task HandleReportClick(ReportModel model)
     {
-
-
         await UpdateSelection(model);
         if (Editor is not null && SelectedReport is not null)
         {
             await Editor.SetValue(SelectedReport.Content);
         }
         StateHasChanged();
-
     }
 
-    private void RemoveSelected()
+    private async Task RemoveSelected()
     {
         SelectedProgram = null;
         SelectedReport = null;
+        if (Editor is not null){
+          await Editor.DisposeEditor();
+        }
         StateHasChanged();
     }
 
     private async Task ValidateReport()
     {
-        if (reportService is null || SelectedReport is null)
-        {
-            return;
-        }
+      if (reportService is null || SelectedReport is null)
+      {
+        return;
+      }
 
-        if (await reportService.ValidateReport("validated", SelectedReport.Id))
-        {
-            RemoveReport(SelectedReport.Id);
-        }
+      if (await reportService.ValidateReport("validated", SelectedReport.Id))
+      {
+        RemoveReport(SelectedReport.Id);
+      }
     }
 
     private async Task RejectReport()
     {
-        if (reportService is null || SelectedReport is null)
-        {
-            return;
-        }
+      if (reportService is null || SelectedReport is null)
+      {
+        return;
+      }
 
-        if (await reportService.ValidateReport("rejected", SelectedReport.Id))
-        {
-            RemoveReport(SelectedReport.Id);
-        }
+      if (await reportService.ValidateReport("rejected", SelectedReport.Id))
+      {
+        RemoveReport(SelectedReport.Id);
+      }
     }
 
     private void RemoveReport(int id)
     {
-        reports = reports.Where(val => val.Id != id).ToList();
-        RemoveSelected();
-        StateHasChanged();
+      reports = reports.Where(val => val.Id != id).ToList();
+      RemoveSelected();
+      StateHasChanged();
     }
 
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
-        Editor = editor;
+      Editor = editor;
 
-        return new StandaloneEditorConstructionOptions
-        {
-            Language = "markdown",
-            Value = SelectedReport?.Content ?? "",
-            AutomaticLayout = true,
-            AutoIndent = "advanced",
-            Theme = "vs-dark",
-            AccessibilityPageSize = 1000,
-            WordBasedSuggestions = false,
-            WordWrap = "on",
-            ReadOnly = true,
-            Model = null
-        };
+      return new StandaloneEditorConstructionOptions
+      {
+        Language = "markdown",
+                 Value = SelectedReport?.Content ?? "",
+                 AutomaticLayout = true,
+                 AutoIndent = "advanced",
+                 Theme = "vs-dark",
+                 AccessibilityPageSize = 1000,
+                 WordBasedSuggestions = false,
+                 WordWrap = "on",
+                 ReadOnly = true,
+                 Model = null
+      };
     }
 }

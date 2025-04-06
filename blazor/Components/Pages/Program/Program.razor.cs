@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace blazor.Components.Pages.Program;
 
+[RequireCsrfToken]
 public partial class Program : ComponentBase
 {
     [Inject]

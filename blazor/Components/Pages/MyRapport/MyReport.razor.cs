@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace blazor.Components.Pages.MyRapport;
 
+[RequireCsrfToken]
 public partial class MyReport : ComponentBase
 {
 
