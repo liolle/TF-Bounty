@@ -1,8 +1,8 @@
 using api.CQS;
 using api.database.entities;
-using api.middlewares;
 using api.models;
 using api.services;
+using edllx.dotnet.csrf;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +16,7 @@ public class ReportController(IReportService reportService) : ControllerBase
     [Route("/report/create")]
     [Authorize(Roles = "Bounty.Hunter")]
     [EnableCors("auth-input")]
-    [ValidateCsrf]
+    [RequireCSRF]
     public IActionResult Create([FromBody] AddRapportModel model)
     {
         string? oid = User.Claims.FirstOrDefault(c => c.Type == CustomClaimTypes.Oid)?.Value;
@@ -92,7 +92,7 @@ public class ReportController(IReportService reportService) : ControllerBase
     [Route("/report/validate")]
     [Authorize(Roles = "Admin")]
     [EnableCors("auth-input")]
-    [ValidateCsrf]
+    [RequireCSRF]
     public IActionResult ValidateReport([FromQuery] string state, [FromQuery] int? id)
     {
 

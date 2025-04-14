@@ -1,11 +1,12 @@
 using blazor.models;
 using blazor.services;
+using edllx.dotnet.csrf;
 using Microsoft.AspNetCore.Components;
 
 namespace blazor.Components.Pages.Home;
 
 
-[RequireCsrfToken]
+[RequireCSRF]
 public partial class Home : ComponentBase
 {
     [Inject]

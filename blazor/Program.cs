@@ -1,7 +1,7 @@
 using blazor.Components;
 using blazor.services;
-using csrf;
 using DotNetEnv;
+using edllx.dotnet.csrf;
 using Microsoft.AspNetCore.Components.Authorization;
 using Prometheus;
 
@@ -16,7 +16,7 @@ builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-builder.Services.AddSingleton<CsrfService>();
+builder.Services.AddSingleton<CSRFService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthProvider>();
@@ -35,36 +35,7 @@ if (!app.Environment.IsDevelopment())
   app.UseHsts();
 }
 
-app.Use(
-    async (context, next) =>
-    {
-
-    CsrfService csrfService = context.RequestServices.GetRequiredService<CsrfService>();
-    IConfiguration configuration = context.RequestServices.GetRequiredService<IConfiguration>();
-    string CSRF_COOKIE_NAME =configuration["CSRF_COOKIE_NAME"]??throw new Exception("Missing configuration CSRF_COOKIE_NAME"); 
-    string CSRF_HEADER_NAME =configuration["CSRF_HEADER_NAME"]??throw new Exception("Missing configuration CSRF_HEADER_NAME"); 
-    var (cookieToken, requestToken) = csrfService.GenerateTokens();
-    var endpoint = context.GetEndpoint();
-
-    if (endpoint?.Metadata.GetMetadata<RequireCsrfTokenAttribute>() != null )
-    {
-
-    context.Response.Cookies.Append(
-        CSRF_COOKIE_NAME,
-        cookieToken,
-        new CookieOptions
-        {
-        HttpOnly = true,
-        Secure = true,
-        SameSite = SameSiteMode.Strict
-        });
-
-    }
-    string cookie = context.Request.Cookies[CSRF_COOKIE_NAME] ?? "";
-    context.Items[CSRF_HEADER_NAME] = csrfService.ComputeHmac(cookie);
-
-    await next();
-    });
+app.UseCSRFBlazorServer();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

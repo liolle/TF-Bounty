@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CSRF\CSRF.csproj" />
+    <ProjectReference Include="..\Edllx.Dotnet.CSRF\Edllx.Dotnet.CSRF.csproj" />
   </ItemGroup>
 
 </Project>
