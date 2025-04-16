@@ -3,12 +3,13 @@ using System.Security.Claims;
 using blazor.models;
 using blazor.services;
 using BlazorMonaco.Editor;
+using edllx.dotnet.csrf;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace blazor.Components.Pages.MyRapport;
 
-[RequireCsrfToken]
+[RequireCSRF]
 public partial class MyReport : ComponentBase
 {
 

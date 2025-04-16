@@ -23,7 +23,6 @@ builder.Services.AddScoped<AuthenticationStateProvider, AuthProvider>();
 builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddScoped<IProgramService,ProgramService>();
 builder.Services.AddScoped<IReportService,ReportService>();
-builder.Services.AddScoped<CsrfContext>();
 
 var app = builder.Build();
 

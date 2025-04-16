@@ -1,9 +1,10 @@
 using blazor.services;
+using edllx.dotnet.csrf;
 using Microsoft.AspNetCore.Components;
 
 namespace blazor.Components.Pages.Oauth.MicrosoftOauth;
 
-[RequireCsrfToken]
+[RequireCSRF]
 public partial class MicrosoftOauth : ComponentBase
 {
     [Parameter]
@@ -19,8 +20,6 @@ public partial class MicrosoftOauth : ComponentBase
     [Inject]
     IConfiguration? Configuration {get;set;}
 
-    [Inject]
-    CsrfContext? CContext {get;set;}
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

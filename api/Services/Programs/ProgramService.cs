@@ -144,7 +144,7 @@ public partial class ProgramService
 
             return IQueryResult<List<ProgramEntity>>.Success(programs);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return IQueryResult<List<ProgramEntity>>.Failure("Server error");
         }

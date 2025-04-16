@@ -1,13 +1,15 @@
 using System.Security.Claims;
+using System.Threading.Tasks;
 using blazor.models;
 using blazor.services;
 using BlazorMonaco.Editor;
+using edllx.dotnet.csrf;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace blazor.Components.Pages.Issue;
 
-[RequireCsrfToken]
+[RequireCSRF]
 public partial class Issue : ComponentBase
 {
     [Inject]
@@ -95,7 +97,7 @@ public partial class Issue : ComponentBase
 
       if (await reportService.ValidateReport("validated", SelectedReport.Id))
       {
-        RemoveReport(SelectedReport.Id);
+        await RemoveReport(SelectedReport.Id);
       }
     }
 
@@ -108,14 +110,14 @@ public partial class Issue : ComponentBase
 
       if (await reportService.ValidateReport("rejected", SelectedReport.Id))
       {
-        RemoveReport(SelectedReport.Id);
+        await RemoveReport(SelectedReport.Id);
       }
     }
 
-    private void RemoveReport(int id)
+    private async Task RemoveReport(int id)
     {
       reports = reports.Where(val => val.Id != id).ToList();
-      RemoveSelected();
+      await RemoveSelected();
       StateHasChanged();
     }
 

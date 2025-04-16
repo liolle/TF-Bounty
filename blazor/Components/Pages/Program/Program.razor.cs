@@ -1,12 +1,13 @@
 using System.Security.Claims;
 using blazor.models;
 using blazor.services;
+using edllx.dotnet.csrf;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace blazor.Components.Pages.Program;
 
-[RequireCsrfToken]
+[RequireCSRF]
 public partial class Program : ComponentBase
 {
     [Inject]
