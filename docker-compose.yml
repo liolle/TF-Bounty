@@ -19,7 +19,7 @@ services:
       - api.env
     networks:
       - tf-bounty_net
-      - ${REV_PROXY_NET}
+      - caddy_net
 
   tf-bounty-front:
     container_name: tf-bounty-front
@@ -30,10 +30,10 @@ services:
       - blazor.env
     networks:
       - tf-bounty_net
-      - ${REV_PROXY_NET}
+      - caddy_net
 
 networks:
   tf-bounty_net:
     external: true
-  ${REV_PROXY_NET}:
+  caddy_net:
     external: true
