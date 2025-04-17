@@ -8,12 +8,10 @@ services:
     networks:
       - tf-bounty_net
     volumes:
-      - ./data:/var/opt/mssql
+      - ${DB_DATA}:/var/opt/mssql
 
   tf-bounty-api:
     container_name: tf-bounty-api
-    ports:
-      - 7294:8080
     build: 
       context: ./
       dockerfile: api.Dockerfile
@@ -21,11 +19,10 @@ services:
       - api.env
     networks:
       - tf-bounty_net
+      - ${REV_PROXY_NET}
 
   tf-bounty-front:
     container_name: tf-bounty-front
-    ports:
-      - 7575:8080
     build: 
       context: ./
       dockerfile: blazor.Dockerfile
@@ -33,7 +30,10 @@ services:
       - blazor.env
     networks:
       - tf-bounty_net
+      - ${REV_PROXY_NET}
 
 networks:
   tf-bounty_net:
+    external: true
+  ${REV_PROXY_NET}:
     external: true
