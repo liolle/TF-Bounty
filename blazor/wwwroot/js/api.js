@@ -1,6 +1,6 @@
 
-window.logout = async () => {
-  const response = await fetch('https://localhost:7294/logout', {
+window.logout = async (url) => {
+  const response = await fetch(`${url}/logout`, {
     credentials: 'include'
   });
   return "";

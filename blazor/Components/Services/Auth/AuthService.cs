@@ -10,7 +10,7 @@ public class AuthService(IJSRuntime js,IConfiguration configuration) : IAuthServ
 
   public async Task Logout()
   {
-    await _js.InvokeAsync<string>("logout");
+    await _js.InvokeAsync<string>("logout",API_URL);
   }
 
   public async Task AzureLogin(string code, string redirect_success_uri, string redirect_failure_uri)
