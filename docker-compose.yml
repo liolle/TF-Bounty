@@ -1,0 +1,39 @@
+services:
+  tf-bounty-db:
+    container_name: tf-bounty-db
+    build: 
+      context: ./DB
+    env_file:
+      - api.env
+    networks:
+      - tf-bounty_net
+    volumes:
+      - ./data:/var/opt/mssql
+
+  tf-bounty-api:
+    container_name: tf-bounty-api
+    ports:
+      - 7294:8080
+    build: 
+      context: ./
+      dockerfile: api.Dockerfile
+    env_file:
+      - api.env
+    networks:
+      - tf-bounty_net
+
+  tf-bounty-front:
+    container_name: tf-bounty-front
+    ports:
+      - 7575:8080
+    build: 
+      context: ./
+      dockerfile: blazor.Dockerfile
+    env_file:
+      - blazor.env
+    networks:
+      - tf-bounty_net
+
+networks:
+  tf-bounty_net:
+    external: true

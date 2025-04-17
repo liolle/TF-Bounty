@@ -11,7 +11,6 @@ var configuration = builder.Configuration;
 
 // Add Env &  Json configuration
 Env.Load();
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
@@ -49,11 +48,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+string front_host = configuration["FRONT_HOST"] ?? throw new Exception("Missing configuration: FRONT_HOST") ;
+
 // Cors
 builder.Services.AddCors(options=>{
     options.AddPolicy("auth-input", policy=>{
         policy
-        .WithOrigins(["https://localhost:7575","https://localhost:7575/"])
+        .WithOrigins([front_host])
+        //.AllowAnyOrigin()
         .AllowCredentials()
         .AllowAnyHeader()
         .AllowAnyMethod();

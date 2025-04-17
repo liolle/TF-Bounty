@@ -6,9 +6,9 @@ window.logout = async () => {
   return "";
 };
 
-window.azureOauth = async (code, redirect_success_uri, redirect_failure_uri, csrf_token_value) => {
+window.azureOauth = async (code, redirect_success_uri, redirect_failure_uri, csrf_token_value,url) => {
   console.log(code,csrf_token_value)
-  const response = await fetch('https://localhost:7294/oauth/microsoft', {
+  const response = await fetch(`${url}/oauth/microsoft`, {
     method: "POST",
     credentials: 'include',
     headers: {
@@ -24,8 +24,8 @@ window.azureOauth = async (code, redirect_success_uri, redirect_failure_uri, csr
 
 }
 
-window.getAllProgram = async (search) => {
-  const response = await fetch(`https://localhost:7294/program/get/all${search ? "?search=" + search : ""}`, {
+window.getAllProgram = async (search, url) => {
+  const response = await fetch(`${url}/program/get/all${search ? "?search=" + search : ""}`, {
     method: "GET",
   })
 
@@ -43,8 +43,8 @@ window.getAllProgram = async (search) => {
   }
 }
 
-window.getUserReport = async () => {
-  const response = await fetch(`https://localhost:7294/report/get/me`, {
+window.getUserReport = async (url) => {
+  const response = await fetch(`${url}/report/get/me`, {
     credentials: 'include',
     method: "GET",
   })
@@ -64,8 +64,8 @@ window.getUserReport = async () => {
 }
 
 
-window.getPendingReport = async () => {
-  const response = await fetch(`https://localhost:7294/report/get/pending`, {
+window.getPendingReport = async (url) => {
+  const response = await fetch(`${url}/report/get/pending`, {
     credentials: 'include',
     method: "GET",
   })
@@ -84,8 +84,8 @@ window.getPendingReport = async () => {
   }
 }
 
-window.validateReport = async (state, id,csrf_token) => {
-  const response = await fetch(`https://localhost:7294/report/validate?state=${state}&id=${id}`, {
+window.validateReport = async (state, id,csrf_token,url) => {
+  const response = await fetch(`${url}/report/validate?state=${state}&id=${id}`, {
     credentials: 'include',
     method: "PATCH",
     headers: {
@@ -98,8 +98,8 @@ window.validateReport = async (state, id,csrf_token) => {
   return true
 }
 
-window.getProgramById = async (id) => {
-  const response = await fetch(`https://localhost:7294/program/get?id=${id}`, {
+window.getProgramById = async (id,url) => {
+  const response = await fetch(`${url}/program/get?id=${id}`, {
     method: "GET",
   })
 
@@ -118,8 +118,8 @@ window.getProgramById = async (id) => {
 }
 
 
-window.addProgram = async (model,csrf_token_value) => {
-  const response = await fetch(`https://localhost:7294/program/create`, {
+window.addProgram = async (model,csrf_token_value,url) => {
+  const response = await fetch(`${url}/program/create`, {
     method: "POST",
     credentials: 'include',
     headers: {
@@ -135,8 +135,8 @@ window.addProgram = async (model,csrf_token_value) => {
 }
 
 
-window.addRapport = async (model,csrf_token_value) => {
-  const response = await fetch(`https://localhost:7294/report/create`, {
+window.addRapport = async (model,csrf_token_value,url) => {
+  const response = await fetch(`${url}/report/create`, {
     method: "POST",
     credentials: 'include',
     headers: {

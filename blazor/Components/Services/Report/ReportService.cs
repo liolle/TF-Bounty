@@ -19,6 +19,7 @@ public class ReportService(IJSRuntime jSRuntime, IHttpContextAccessor contextAcc
     private readonly Debouncer _debouncer = new Debouncer();
     private readonly HttpContext _contextAccessor = contextAccessor?.HttpContext ?? throw new Exception("Missing HttpContext");
     private readonly string _tokenName = config["CSRF_HEADER_NAME"]??throw new Exception("Missing configuration CSRF_HEADER_NAME");
+    private readonly string API_URL = config["API_URL"]?? throw new Exception("Missing configuration: API_URL"); 
   
     private string CSRF_TOKEN {get{
       string? t = _contextAccessor.Items[_tokenName] as string;
@@ -27,7 +28,7 @@ public class ReportService(IJSRuntime jSRuntime, IHttpContextAccessor contextAcc
 
     public async Task Add(ReportModel model)
     {
-      await _jSRuntime.InvokeVoidAsync("addRapport", model,CSRF_TOKEN);
+      await _jSRuntime.InvokeVoidAsync("addRapport", model,CSRF_TOKEN,API_URL);
     }
 
     public async Task<List<ReportModel>> GetUserReport(int timeout = 250)
@@ -39,7 +40,7 @@ public class ReportService(IJSRuntime jSRuntime, IHttpContextAccessor contextAcc
           {
           try
           {
-          List<RawReportModel> raw_programs = await _jSRuntime.InvokeAsync<List<RawReportModel>>("getUserReport");
+          List<RawReportModel> raw_programs = await _jSRuntime.InvokeAsync<List<RawReportModel>>("getUserReport",API_URL);
           tcs.SetResult([.. raw_programs.Select(val => val.Extract())]);
           }
           catch (Exception e)
@@ -61,7 +62,7 @@ public class ReportService(IJSRuntime jSRuntime, IHttpContextAccessor contextAcc
           {
           try
           {
-          List<RawReportModel> raw_programs = await _jSRuntime.InvokeAsync<List<RawReportModel>>("getPendingReport");
+          List<RawReportModel> raw_programs = await _jSRuntime.InvokeAsync<List<RawReportModel>>("getPendingReport",API_URL);
           tcs.SetResult([.. raw_programs.Select(val => val.Extract())]);
           }
           catch (Exception e)
@@ -82,7 +83,7 @@ public class ReportService(IJSRuntime jSRuntime, IHttpContextAccessor contextAcc
           {
           try
           {
-          bool res = await _jSRuntime.InvokeAsync<bool>("validateReport", state, id,CSRF_TOKEN);
+          bool res = await _jSRuntime.InvokeAsync<bool>("validateReport", state, id,CSRF_TOKEN,API_URL);
           tcs.SetResult(res);
           }
           catch (Exception e)
