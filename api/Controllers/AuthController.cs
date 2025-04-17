@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.controller;
 
-public class AuthController(IUserService userService, IConfiguration configuration) : ControllerBase
+public class AuthController(IUserService userService, IConfiguration configuration, ILogger<AuthController> loger) : ControllerBase
 {
 
   [HttpPost]
@@ -20,13 +20,13 @@ public class AuthController(IUserService userService, IConfiguration configurati
       QueryResult<string> result = await userService.Execute(query);
       if (!result.IsSuccess && query.Redirect_Failure_Uri is not null)
       {
-        Console.WriteLine(result.ErrorMessage);
+        loger.LogInformation(result.ErrorMessage);
         return BadRequest(result.ErrorMessage);
       }
 
       if (!result.IsSuccess)
       {
-        Console.WriteLine(result.ErrorMessage);
+        loger.LogInformation(result.ErrorMessage);
         return BadRequest(result.ErrorMessage);
       }
 
@@ -38,7 +38,7 @@ public class AuthController(IUserService userService, IConfiguration configurati
                  Expires = DateTime.UtcNow.AddMinutes(60)
       };
 
-      Console.WriteLine(result.Result);
+      loger.LogInformation(result.Result);
       Response.Cookies.Append(token_name, result.Result, cookieOptions);
 
       return Ok();
@@ -46,7 +46,7 @@ public class AuthController(IUserService userService, IConfiguration configurati
     }
     catch (Exception e)
     {
-      Console.WriteLine(e.Message);
+      loger.LogInformation(e.Message);
       return BadRequest("Server error");
     }
   }
@@ -64,7 +64,7 @@ public class AuthController(IUserService userService, IConfiguration configurati
     }
     catch (Exception e)
     {
-      Console.WriteLine(e.Message);
+      loger.LogInformation(e.Message);
       return BadRequest("Server error");
     }
 
