@@ -36,10 +36,13 @@ jobs:
             echo "BUMP_TYPE=${BASH_REMATCH[1]}"
           else
             echo "No version bump requested in commit message."
+            echo "SKIP_BUMP=true" >> $GITHUB_OUTPUT
             exit 78  # Skip all subsequent jobs if no version bump requested
           fi
 
       - name: Get Latest Tag
+        needs: check-bump
+        if: steps.extract_bump.outputs.SKIP_BUMP != 'true'
         id: get_tag
         run: |
           git fetch --tags
@@ -47,6 +50,7 @@ jobs:
           echo "CURRENT_VERSION=$LATEST_TAG" >> $GITHUB_OUTPUT
 
       - name: Calculate New Version
+        needs: get_tag
         id: bump_version
         run: |
           NEW_VERSION=$(semver bump ${{ steps.extract_bump.outputs.BUMP_TYPE }} ${{ steps.get_tag.outputs.CURRENT_VERSION }})
@@ -54,6 +58,8 @@ jobs:
           echo "New version: $NEW_VERSION"
 
       - name: Create and Push New Tag
+        needs: bump_version
+        if: steps.extract_bump.outputs.SKIP_BUMP != 'true'
         if: steps.extract_bump.outputs.BUMP_TYPE
         run: |
           git config --global user.name "GitHub Actions"
