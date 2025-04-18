@@ -59,21 +59,6 @@ jobs:
           curl -sLo /usr/local/bin/semver \
             https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
           chmod +x /usr/local/bin/semver
-
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Cache semver-tool
-        id: cache-semver
-        uses: actions/cache@v3
-        with:
-          path: /usr/local/bin/semver
-          key: semver-tool-1.0.0
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       
       - name: Get Latest Tag
         id: get_tag
