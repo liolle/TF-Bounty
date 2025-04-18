@@ -46,6 +46,11 @@ jobs:
     if: ${{ !needs.setup.outputs.should_skip }}
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
       - name: Cache semver-tool
         id: cache-semver
         uses: actions/cache@v3
