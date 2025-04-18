@@ -12,7 +12,6 @@ jobs:
       - name: Extract Tag Version
         id: extract_tag
         run: |
-          # Extract the tag name 
           TAG_VERSION=${GITHUB_REF#refs/tags/v}
           echo "TAG_VERSION=$TAG_VERSION" >> $GITHUB_OUTPUT
 
