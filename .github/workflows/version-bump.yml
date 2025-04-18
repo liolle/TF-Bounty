@@ -46,6 +46,31 @@ jobs:
     if: ${{ !needs.setup.outputs.should_skip }}
     runs-on: ubuntu-latest
     steps:
+      - name: Cache semver-tool
+        id: cache-semver
+        uses: actions/cache@v3
+        with:
+          path: /usr/local/bin/semver
+          key: semver-tool-1.0.0
+
+      - name: Install semver-tool (if not cached)
+        if: steps.cache-semver.outputs.cache-hit != 'true'
+        run: |
+          curl -sLo /usr/local/bin/semver \
+            https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
+          chmod +x /usr/local/bin/semver
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Cache semver-tool
+        id: cache-semver
+        uses: actions/cache@v3
+        with:
+          path: /usr/local/bin/semver
+          key: semver-tool-1.0.0
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
