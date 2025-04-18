@@ -17,6 +17,8 @@ public class AuthController(IUserService userService, IConfiguration configurati
     try
     {
       string? token_name = configuration["AUTH_TOKEN_NAME"] ?? throw new MissingConfigurationException("AUTH_TOKEN_NAME");
+      string? domain = configuration["DOMAIN"] ?? throw new MissingConfigurationException("DOMAIN");
+
       QueryResult<string> result = await userService.Execute(query);
       if (!result.IsSuccess && query.Redirect_Failure_Uri is not null)
       {
@@ -33,8 +35,9 @@ public class AuthController(IUserService userService, IConfiguration configurati
       CookieOptions cookieOptions = new()
       {
         HttpOnly = true,
+                 Domain = $".{domain}",
                  Secure = true,
-                 SameSite = SameSiteMode.Strict,
+                 SameSite = SameSiteMode.None,
                  Expires = DateTime.UtcNow.AddMinutes(60)
       };
 

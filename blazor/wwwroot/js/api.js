@@ -6,14 +6,12 @@ window.logout = async (url) => {
   return "";
 };
 
-window.azureOauth = async (code, redirect_success_uri, redirect_failure_uri, csrf_token_value,url) => {
-  console.log(code,csrf_token_value)
+window.azureOauth = async (code, redirect_success_uri, redirect_failure_uri,url) => {
   const response = await fetch(`${url}/oauth/microsoft`, {
     method: "POST",
     credentials: 'include',
     headers: {
       "Content-Type": "application/json",
-      "X-CSRF-TOKEN" : csrf_token_value, 
     },
     body: JSON.stringify({
       code: code,
