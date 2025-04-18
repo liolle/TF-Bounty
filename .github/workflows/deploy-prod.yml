@@ -1,9 +1,9 @@
-name: Delpoy
+name: Deploy
 
 on:
   push:
-    tags:
-      - 'v*' 
+    tags: [ v* ] 
+  workflow_dispatch:  # Optional: Manual trigger
 
 jobs:
   call-webhook:
