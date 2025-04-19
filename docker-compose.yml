@@ -31,6 +31,8 @@ services:
     networks:
       - tf-bounty_net
       - caddy_net
+    volumes:
+      - ${SHARED_KEYS}:/data
 
 networks:
   tf-bounty_net:

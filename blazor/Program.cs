@@ -3,6 +3,7 @@ using blazor.services;
 using DotNetEnv;
 using edllx.dotnet.csrf;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,9 @@ builder.Services.AddScoped<AuthenticationStateProvider, AuthProvider>();
 builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddScoped<IProgramService,ProgramService>();
 builder.Services.AddScoped<IReportService,ReportService>();
+
+builder.Services.AddDataProtection()
+    .SetApplicationName("tf-bounty").PersistKeysToFileSystem(new DirectoryInfo(builder.Configuration["SHARED_KEYS"] ?? "/data/keys"));
 
 var app = builder.Build();
 
