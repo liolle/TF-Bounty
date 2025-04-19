@@ -1,20 +1,12 @@
-name: Deploy
+name: Manual Deploy
 
 on:
-  push:
-    tags: [ v* ] 
-  workflow_dispatch:  # Optional: Manual trigger
+  workflow_dispatch:  
 
 jobs:
   call-webhook:
     runs-on: ubuntu-latest
     steps:
-      - name: Extract Tag Version
-        id: extract_tag
-        run: |
-          TAG_VERSION=${GITHUB_REF#refs/tags/v}
-          echo "TAG_VERSION=$TAG_VERSION" >> $GITHUB_OUTPUT
-
       - name: Call Webhook
         env:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}  
