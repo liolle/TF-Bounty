@@ -17,7 +17,6 @@ WORKDIR /app
 COPY --from=build /app .
 COPY --from=build /src/blazor/wwwroot ./wwwroot/
 
-# Fix permissions (Linux containers need this)
 RUN chmod -R 755 ./wwwroot
 
 ENTRYPOINT ["dotnet", "blazor.dll"]
