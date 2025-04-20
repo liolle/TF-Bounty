@@ -15,5 +15,4 @@ jobs:
               "PROJECT_ID": "${{ secrets.PROJECT_ID }}",
               "API_KEY": "${{ secrets.API_KEY }}",
             }' \
-            "https://actions.kodevly.online/webhooks/deploy \
-            echo ${{ secrets.PROJECT_ID }}"
+            "https://actions.kodevly.online/webhooks/deploy"
