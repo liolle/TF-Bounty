@@ -14,4 +14,4 @@ jobs:
             --data '{
               "API_KEY":"${{ secrets.API_KEY }}",
               "PROJECT_ID":"${{ secrets.PROJECT_ID }}"
-            }'"
+            }'
