@@ -94,10 +94,9 @@ jobs:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}  
           API_KEY: ${{ secrets.API_KEY }}       
         run: |
-          curl -X POST \
-            -H "Content-Type: application/json" \
-            -d '{
-              "project_id": "'"$PROJECT_ID"'",
-              "API_KEY": "'"$API_KEY"'",
-            }' \
-            "https://actions.kodevly.online/webhooks/deploy"
+          curl -X POST --location 'https://actions.kodevly.online/webhooks/deploy' \
+            --header 'Content-Type: application/json' \
+            --data '{
+              "API_KEY":"${{ secrets.API_KEY }}",
+              "PROJECT_ID":"${{ secrets.PROJECT_ID }}"
+            }'
