@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace api.models;
 
 public class AddRapportModel

@@ -35,7 +35,7 @@ public class AuthController(IUserService userService, IConfiguration configurati
       CookieOptions cookieOptions = new()
       {
         HttpOnly = true,
-                 Domain = $".{domain}",
+                 Domain = $"{domain}",
                  Secure = true,
                  SameSite = SameSiteMode.None,
                  Expires = DateTime.UtcNow.AddMinutes(60)
@@ -61,8 +61,19 @@ public class AuthController(IUserService userService, IConfiguration configurati
   {
     try
     {
-      string? token_name = configuration["AUTH_TOKEN_NAME"] ?? throw new MissingConfigurationException("AUTH_TOKEN_NAME");
-      Response.Cookies.Delete(token_name);
+      string token_name = configuration["AUTH_TOKEN_NAME"] ?? throw new MissingConfigurationException("AUTH_TOKEN_NAME");
+      string domain = configuration["DOMAIN"] ?? throw new MissingConfigurationException("DOMAIN");
+
+      CookieOptions cookieOptions = new()
+      {
+        HttpOnly = true,
+        Domain = $"{domain}",
+        Secure = true,
+        SameSite = SameSiteMode.None,
+        Expires = DateTime.Now.AddDays(-1)
+      };
+
+      Response.Cookies.Append(token_name, string.Empty, cookieOptions);
       return Ok();
     }
     catch (Exception e)

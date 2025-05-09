@@ -11,4 +11,4 @@ while [[ $DBSTATUS -ne 0 ]] && [[ $i -lt 60 ]] && [[ $ERRCODE -ne 0 ]]; do
 done
 
 echo "Running setup"
-/opt/mssql-tools18/bin/sqlcmd -S $DB_HOST -U sa -P $SA_PASSWORD -N -C -i setup.sql
+/opt/mssql-tools18/bin/sqlcmd -S $DB_HOST -U sa -P $SA_PASSWORD -d master -N -C -i setup.sql
